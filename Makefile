@@ -13,4 +13,7 @@ go:
 check:
 	md5sum -c MD5
 
-.PHONY: main go result check
+bench:
+	go test -bench=.
+
+.PHONY: main go result check bench
