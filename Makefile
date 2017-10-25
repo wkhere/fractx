@@ -9,7 +9,7 @@ go:
 	go fmt
 	go vet
 	go build
-	go test
+	@#go test
 
 check:
 	md5sum -c MD5
@@ -17,4 +17,7 @@ check:
 bench:
 	go test -bench=.
 
-.PHONY: main go result check bench
+other:
+	GOARCH=386 go build -o fractx386
+
+.PHONY: main go result check bench other
