@@ -1,5 +1,5 @@
 + use Go iter for comparison
-- use SHUFPD?
+- now having best cycled asm, have go version for other GOARCHs
 - colors
 - size & xy bounds via commandline
 - no global maxi - make it part of fractal struct
