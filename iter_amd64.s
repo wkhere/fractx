@@ -1,4 +1,3 @@
-
 #include "textflag.h"
 
 // func(x0, y0 float64) int
