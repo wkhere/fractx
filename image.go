@@ -9,7 +9,7 @@ type fractal struct {
 	w, h           int
 	x0, y0, x1, y1 float64
 	dx, dy         float64
-	iterFunc       func(x0, y0 float64) int64
+	iterFunc       func(x0, y0 float64) int
 }
 
 func newFractal(w, h int, x0, y0, x1, y1 float64) *fractal {
@@ -35,9 +35,9 @@ func (img *fractal) At(x, y int) color.Color {
 	return color.White
 }
 
-func iterSSE(x0, y0 float64) int64
+func iterSSE(x0, y0 float64) int
 
-func iterGo(x0, y0 float64) (i int64) {
+func iterGo(x0, y0 float64) (i int) {
 	x, y := x0, y0
 	for i = 1; ; {
 		xx, yy := x*x, y*y
@@ -53,6 +53,6 @@ func iterGo(x0, y0 float64) (i int64) {
 }
 
 var (
-	maxi   int64   = 200
+	maxi   int     = 200
 	pbound float64 = 4.0
 )
