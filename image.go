@@ -26,7 +26,7 @@ func (img *fractal) Bounds() image.Rectangle {
 }
 
 func (img *fractal) At(x, y int) color.Color {
-	i, _, _ := iter(img.x0+float64(x)*img.dx, img.y0+float64(y)*img.dy)
+	i := iter(img.x0+float64(x)*img.dx, img.y0+float64(y)*img.dy)
 	if i >= maxi {
 		return color.Black
 	}

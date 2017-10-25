@@ -1,6 +1,6 @@
 package main
 
-func iter(x0, y0 float64) (int64, float64, float64)
+func iter(x0, y0 float64) int64
 
 var (
 	maxi   int64   = 200

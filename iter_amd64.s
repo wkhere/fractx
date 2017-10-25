@@ -1,7 +1,8 @@
 
 #include "textflag.h"
 
-TEXT ·iter(SB),NOSPLIT,$8-40
+// func iter(x0, y0 float64) int64
+TEXT ·iter(SB),NOSPLIT,$8-24
     MOVLPD  x0+0(FP), X0
     MOVHPD  y0+8(FP), X0
     MOVLPD  x0+0(FP), X4
@@ -53,6 +54,4 @@ loop:
 
 end:
     MOVQ    CX, ret+16(FP)
-    MOVLPD  X0, ret1+24(FP)
-    MOVHPD  X0, ret2+32(FP)
     RET
