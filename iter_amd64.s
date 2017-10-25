@@ -32,10 +32,8 @@ loop:
     // now: X0L = x*x-y*y; X0H = x*x+y*y
     MOVHPD  X0, tmp-8(SP)
     MOVLPD  tmp-8(SP), X1   // X1L = x*x+y*y
-    CMPSD   X7, X1, 1       // < 4
-    MOVMSKPD X1, BX
-    TESTL   $1, BX
-    JZ      end
+    UCOMISD X7, X1          // < 4
+    JNB     end
 
     ADDSD   X4, X0          // X0L = x' = x*x-y*y+x0
 
