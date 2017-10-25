@@ -6,7 +6,6 @@ import (
 )
 
 func main() {
-
 	img := newFractal(700, 400, -2.5, -1, 1, 1)
 
 	file, err := os.Create("mandelbrot.png")
@@ -20,5 +19,4 @@ func main() {
 	}()
 
 	png.Encode(file, img)
-
 }

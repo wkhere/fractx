@@ -15,8 +15,8 @@ TEXT ·iterSSE(SB),NOSPLIT,$0-24
     // regs:
     // X0L - current x, xx
     // X1L - current y, yy
-    // X2L -  backup x
-    // X3L -  backup y
+    // X2L - backup x
+    // X3L - backup y
     // X4L - backup x0
     // X5L - backup y0
     // X6L - backup xx, acc
