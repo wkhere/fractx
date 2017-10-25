@@ -5,11 +5,10 @@
 TEXT ·iterSSE(SB),NOSPLIT,$8-24
     MOVLPD  x0+0(FP), X0
     MOVHPD  y0+8(FP), X0
-    MOVLPD  x0+0(FP), X4
+    MOVAPS  X0, X4
     MOVLPD  y0+8(FP), X5
 
     MOVLPD  ·pbound(SB), X7
-    MOVLPD  ·two(SB), X6
     MOVQ    ·maxi(SB), DX
     MOVQ    $1, CX
 
@@ -19,7 +18,6 @@ TEXT ·iterSSE(SB),NOSPLIT,$8-24
     // X2 - backup of current point
     // X4L - backup of x0
     // X5L - backup of y0
-    // X6L - const 2
     // X7L - const pbound = 4
 
 loop:
@@ -44,7 +42,7 @@ loop:
     MOVAPD  X2, X1          // X1L = x
     MOVHPD  X2, tmp-8(SP)
     MULSD   tmp-8(SP), X1   // X1L *= y
-    MULSD   X6, X1          // X1L *= 2
+    ADDSD   X1, X1          // X1L *= 2
     ADDSD   X5, X1          // X1L += y0
     MOVLPD  X1, tmp-8(SP)
     MOVHPD  tmp-8(SP), X0   // X0H = y'
