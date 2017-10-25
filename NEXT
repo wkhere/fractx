@@ -1,3 +1,5 @@
 + use Go iter for comparison
 - use SHUFPD?
+- colors
+- size & xy bounds via commandline
 - no global maxi - make it part of fractal struct
