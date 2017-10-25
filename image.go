@@ -17,7 +17,7 @@ func newFractal(w, h int, x0, y0, x1, y1 float64) *fractal {
 		w, h,
 		x0, y0, x1, y1,
 		(x1 - x0) / float64(w), (y1 - y0) / float64(h),
-		iterSSE,
+		iterGo,
 	}
 }
 
@@ -36,6 +36,18 @@ func (img *fractal) At(x, y int) color.Color {
 }
 
 func iterSSE(x0, y0 float64) int64
+
+func iterGo(x0, y0 float64) (i int64) {
+	x, y := x0, y0
+	for i = 1; i < maxi; i++ {
+		xx, yy := x*x, y*y
+		if xx+yy >= 4 {
+			return
+		}
+		x, y = xx-yy+x0, 2*x*y+y0
+	}
+	return
+}
 
 var (
 	maxi   int64   = 200
