@@ -5,8 +5,8 @@
 TEXT ·iterSSE(SB),NOSPLIT,$0-24
     MOVLPD  x0+0(FP), X0
     MOVLPD  y0+8(FP), X1
-    MOVAPD  X0, X4
-    MOVAPD  X1, X5
+    MOVUPD  X0, X4
+    MOVUPD  X1, X5
 
     MOVLPD  ·pbound(SB), X7
     MOVQ    ·maxi(SB), CX
@@ -23,12 +23,12 @@ TEXT ·iterSSE(SB),NOSPLIT,$0-24
     // X7L - const pbound = 4
 
 loop:
-    MOVAPD  X0, X2
-    MOVAPD  X1, X3
+    MOVUPD  X0, X2
+    MOVUPD  X1, X3
 
     MULSD   X0, X0      // xx
     MULSD   X1, X1      // yy
-    MOVAPD  X0, X6
+    MOVUPD  X0, X6
     ADDSD   X1, X6      // xx+yy
     UCOMISD X7, X6      // < 4
     JNB     end
@@ -36,7 +36,7 @@ loop:
     SUBSD   X1, X0      // xx-yy
     ADDSD   X4, X0      // +x0 = nx
 
-    MOVAPD  X2, X1      // x
+    MOVUPD  X2, X1      // x
     MULSD   X3, X1      // *y
     ADDSD   X1, X1      // *2
     ADDSD   X5, X1      // +y0 = ny
