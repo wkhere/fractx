@@ -2,52 +2,48 @@
 #include "textflag.h"
 
 // func(x0, y0 float64) int64
-TEXT ·iterSSE(SB),NOSPLIT,$8-24
+TEXT ·iterSSE(SB),NOSPLIT,$0-24
     MOVLPD  x0+0(FP), X0
-    MOVHPD  y0+8(FP), X0
-    MOVAPS  X0, X4
-    MOVLPD  y0+8(FP), X5
+    MOVLPD  y0+8(FP), X1
+    MOVAPD  X0, X4
+    MOVAPD  X1, X5
 
     MOVLPD  ·pbound(SB), X7
-    MOVQ    ·maxi(SB), DX
-    MOVQ    $1, CX
+    MOVQ    ·maxi(SB), CX
+    MOVQ    $1, AX
 
     // regs:
-    // X0 - current point on entry; accumulator
-    // X1 - helper; 2nd accumulator
-    // X2 - backup of current point
-    // X4L - backup of x0
-    // X5L - backup of y0
+    // X0L - current x, xx
+    // X1L - current y, yy
+    // X2L -  backup x
+    // X3L -  backup y
+    // X4L - backup x0
+    // X5L - backup y0
+    // X6L - backup xx, acc
     // X7L - const pbound = 4
 
 loop:
     MOVAPD  X0, X2
-    MULPD   X0, X0          // X0L=x*x, X0H=y*y
-    MOVHPD  X0, tmp-8(SP)
-    MOVLPD  tmp-8(SP), X1   // X1L = y*y
-    MOVDDUP X0, X0          // X0H = x*x
-    MOVDDUP X1, X1          // X1H = y*y
-    LONG $0xC1D00f66
-    //^  ADDSUBPD X1, X0 | X0L -= X1L; X0H += X1H
-    // now: X0L = x*x-y*y; X0H = x*x+y*y
-    MOVHPD  X0, tmp-8(SP)
-    MOVLPD  tmp-8(SP), X1   // X1L = x*x+y*y
-    UCOMISD X7, X1          // < 4
+    MOVAPD  X1, X3
+
+    MULSD   X0, X0      // xx
+    MULSD   X1, X1      // yy
+    MOVAPD  X0, X6
+    ADDSD   X1, X6      // xx+yy
+    UCOMISD X7, X6      // < 4
     JNB     end
 
-    ADDSD   X4, X0          // X0L = x' = x*x-y*y+x0
+    SUBSD   X1, X0      // xx-yy
+    ADDSD   X4, X0      // +x0 = nx
 
-    MOVAPD  X2, X1          // X1L = x
-    MOVHPD  X2, tmp-8(SP)
-    MULSD   tmp-8(SP), X1   // X1L *= y
-    ADDSD   X1, X1          // X1L *= 2
-    ADDSD   X5, X1          // X1L += y0
-    MOVLPD  X1, tmp-8(SP)
-    MOVHPD  tmp-8(SP), X0   // X0H = y'
-    INCQ    CX
-    CMPQ    CX, DX
+    MOVAPD  X2, X1      // x
+    MULSD   X3, X1      // *y
+    ADDSD   X1, X1      // *2
+    ADDSD   X5, X1      // +y0 = ny
+    INCQ    AX
+    CMPQ    AX, CX
     JL      loop
 
 end:
-    MOVQ    CX, ret+16(FP)
+    MOVQ    AX, ret+16(FP)
     RET

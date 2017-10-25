@@ -17,7 +17,7 @@ func newFractal(w, h int, x0, y0, x1, y1 float64) *fractal {
 		w, h,
 		x0, y0, x1, y1,
 		(x1 - x0) / float64(w), (y1 - y0) / float64(h),
-		iterGo,
+		iterSSE,
 	}
 }
 
