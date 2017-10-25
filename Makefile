@@ -11,7 +11,7 @@ go:
 	go build
 	@#go test
 
-check:
+check: go
 	md5sum -c MD5
 
 bench:
