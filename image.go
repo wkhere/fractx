@@ -9,6 +9,7 @@ type fractal struct {
 	w, h           int
 	x0, y0, x1, y1 float64
 	dx, dy         float64
+	iterFunc       func(x0, y0 float64) int64
 }
 
 func newFractal(w, h int, x0, y0, x1, y1 float64) *fractal {
@@ -16,6 +17,7 @@ func newFractal(w, h int, x0, y0, x1, y1 float64) *fractal {
 		w, h,
 		x0, y0, x1, y1,
 		(x1 - x0) / float64(w), (y1 - y0) / float64(h),
+		iterSSE,
 	}
 }
 
@@ -26,14 +28,14 @@ func (img *fractal) Bounds() image.Rectangle {
 }
 
 func (img *fractal) At(x, y int) color.Color {
-	i := iter(img.x0+float64(x)*img.dx, img.y0+float64(y)*img.dy)
+	i := img.iterFunc(img.x0+float64(x)*img.dx, img.y0+float64(y)*img.dy)
 	if i >= maxi {
 		return color.Black
 	}
 	return color.White
 }
 
-func iter(x0, y0 float64) int64
+func iterSSE(x0, y0 float64) int64
 
 var (
 	maxi   int64   = 200
