@@ -32,3 +32,11 @@ func (img *fractal) At(x, y int) color.Color {
 	}
 	return color.White
 }
+
+func iter(x0, y0 float64) int64
+
+var (
+	maxi   int64   = 200
+	pbound float64 = 4.0
+	two    float64 = 2.0
+)
