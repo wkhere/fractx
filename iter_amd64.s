@@ -31,7 +31,7 @@ loop:
     MOVUPD  X3, X6
     ADDSD   X0, X6      // xx+yy
     UCOMISD X7, X6      // < 4
-    JNB     end
+    JAE     end
 
     SUBSD   X3, X0      // xx-yy
     ADDSD   X4, X0      // +x0 = nx
