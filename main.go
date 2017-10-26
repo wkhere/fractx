@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"image/png"
 	"os"
 )
@@ -8,7 +9,10 @@ import (
 func main() {
 	img := newFractal(700, 400, -2.5, -1, 1, 1)
 
-	file, err := os.Create("mandelbrot.png")
+	filename := flag.String("f", "mandelbrot.png", "output file")
+	flag.Parse()
+
+	file, err := os.Create(*filename)
 	if err != nil {
 		panic(err)
 	}
