@@ -1,2 +1,4 @@
 /fractx
-/mandelbrot.png
+/*.png
+/testdata/*.png
+/testdata/*.ppm
