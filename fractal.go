@@ -2,7 +2,6 @@ package main
 
 import (
 	"image"
-	"sync"
 )
 
 type Fractal struct {
@@ -21,24 +20,12 @@ func setup(w, h int, x0, y0, x1, y1 float64) Fractal {
 }
 
 func (f *Fractal) fill() {
-	var wg sync.WaitGroup
-	wg.Add(4)
-
-	chunk := func(py0, py1 int) {
-		for py := py0; py < f.h; py++ {
-			for px := 0; px < f.w; px++ {
-				i := iter(f.x0+float64(px)*f.dx, f.y0+float64(py)*f.dy)
-				f.writePixel(px, py, i)
-			}
+	for y := 0; y < f.h; y++ {
+		for x := 0; x < f.w; x++ {
+			i := iter(f.x0+float64(x)*f.dx, f.y0+float64(y)*f.dy)
+			f.writePixel(x, y, i)
 		}
-		wg.Done()
 	}
-	go chunk(0, f.h/4)
-	go chunk(f.h/4+1, f.h*2)
-	go chunk(f.h/2+1, f.h*3/4)
-	go chunk(f.h*3/4+1, f.h)
-
-	wg.Wait()
 }
 
 type fractalImage interface {
