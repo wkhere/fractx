@@ -16,9 +16,9 @@ func init() {
 func TestExec(t *testing.T) {
 	c := exec.Command
 	for _, cmd := range []*exec.Cmd{
-		c("fractx", "-f", "mandelbrot_bw.png", "-bw"),
+		c("fractx", "-o", "mandelbrot_bw.png", "-color=bw"),
 		c("convert", "mandelbrot_bw.png", "mandelbrot_bw.ppm"),
-		c("fractx", "-f", "mandelbrot_gray.png"),
+		c("fractx", "-o", "mandelbrot_gray.png"),
 		c("convert", "mandelbrot_gray.png", "mandelbrot_gray.ppm"),
 		c("md5sum", "-c", "MD5"),
 	} {
