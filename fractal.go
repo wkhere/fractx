@@ -4,22 +4,22 @@ import (
 	"image"
 )
 
-type Fractal struct {
+type fractal struct {
 	w, h           int
 	x0, y0, x1, y1 float64
 	dx, dy         float64
 	fractalImage
 }
 
-func setup(w, h int, x0, y0, x1, y1 float64) Fractal {
-	return Fractal{w, h, x0, y0, x1, y1,
+func setup(w, h int, x0, y0, x1, y1 float64) fractal {
+	return fractal{w, h, x0, y0, x1, y1,
 		(x1 - x0) / float64(w),
 		(y1 - y0) / float64(h),
 		nil,
 	}
 }
 
-func (f *Fractal) fill() {
+func (f *fractal) fill() {
 	for y := 0; y < f.h; y++ {
 		for x := 0; x < f.w; x++ {
 			i := iter(f.x0+float64(x)*f.dx, f.y0+float64(y)*f.dy)
@@ -34,7 +34,7 @@ type fractalImage interface {
 }
 
 type FractalGray struct {
-	Fractal
+	fractal
 	*image.Gray
 	di float64
 }
@@ -44,19 +44,21 @@ func (f *FractalGray) writePixel(x, y int, iter int) {
 	f.Pix[pos] = -byte(float64(iter) * f.di)
 }
 
-func NewFractalGray(w, h int, x0, y0, x1, y1 float64) (r *FractalGray) {
-	r = &FractalGray{
-		Fractal: setup(w, h, x0, y0, x1, y1),
+func (f *FractalGray) Image() image.Image { return f.Gray }
+
+func NewFractalGray(w, h int, x0, y0, x1, y1 float64) image.Image {
+	f := &FractalGray{
+		fractal: setup(w, h, x0, y0, x1, y1),
 		Gray:    image.NewGray(image.Rect(0, 0, w, h)),
 		di:      256 / float64(maxi),
 	}
-	r.fractalImage = r
-	r.fill()
-	return
+	f.fractalImage = f
+	f.fill()
+	return f
 }
 
 type FractalBW struct {
-	Fractal
+	fractal
 	*image.Gray
 }
 
@@ -67,14 +69,14 @@ func (f *FractalBW) writePixel(x, y int, iter int) {
 	}
 }
 
-func NewFractalBW(w, h int, x0, y0, x1, y1 float64) (r *FractalBW) {
-	r = &FractalBW{
-		Fractal: setup(w, h, x0, y0, x1, y1),
+func NewFractalBW(w, h int, x0, y0, x1, y1 float64) image.Image {
+	f := &FractalBW{
+		fractal: setup(w, h, x0, y0, x1, y1),
 		Gray:    image.NewGray(image.Rect(0, 0, w, h)),
 	}
-	r.fractalImage = r
-	r.fill()
-	return
+	f.fractalImage = f
+	f.fill()
+	return f
 }
 
 var maxi int = 200
