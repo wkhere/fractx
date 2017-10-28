@@ -5,6 +5,7 @@ import (
 	"image"
 	"image/png"
 	"os"
+	"strings"
 )
 
 var fractals = map[string]func(Params) image.Image{
@@ -12,8 +13,20 @@ var fractals = map[string]func(Params) image.Image{
 	"gray": NewFractalGray,
 }
 
+var coloringNames []string
+
+func init() {
+	coloringNames = make([]string, len(fractals))
+	i := 0
+	for k := range fractals {
+		coloringNames[i] = k
+		i++
+	}
+}
+
 func main() {
-	color := flag.String("color", "gray", "one of: bw, gray")
+	color := flag.String("color", "gray", "one of: "+
+		strings.Join(coloringNames, ", "))
 	filename := flag.String("o", "mandelbrot.png", "output file")
 	flag.Parse()
 
