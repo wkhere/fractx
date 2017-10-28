@@ -3,6 +3,7 @@ go:
 	go vet
 	go build
 	go test
+	go install
 
 bench:
 	go test -bench=.
