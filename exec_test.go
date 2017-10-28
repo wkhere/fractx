@@ -14,12 +14,13 @@ func init() {
 }
 
 func TestExec(t *testing.T) {
+	c := exec.Command
 	for _, cmd := range []*exec.Cmd{
-		exec.Command("fractx", "-f", "mandelbrot_bw.png", "-bw"),
-		exec.Command("convert", "mandelbrot_bw.png", "mandelbrot_bw.ppm"),
-		exec.Command("fractx", "-f", "mandelbrot_gs.png"),
-		exec.Command("convert", "mandelbrot_gs.png", "mandelbrot_gs.ppm"),
-		exec.Command("md5sum", "-c", "MD5"),
+		c("fractx", "-f", "mandelbrot_bw.png", "-bw"),
+		c("convert", "mandelbrot_bw.png", "mandelbrot_bw.ppm"),
+		c("fractx", "-f", "mandelbrot_gray.png"),
+		c("convert", "mandelbrot_gray.png", "mandelbrot_gray.ppm"),
+		c("md5sum", "-c", "MD5"),
 	} {
 		if out, err := cmd.CombinedOutput(); err != nil {
 			t.Errorf("%q error:\n%s\n%s",
