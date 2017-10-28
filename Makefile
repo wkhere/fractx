@@ -1,3 +1,5 @@
+sel=.	# selection for test/bench
+
 go:
 	go fmt
 	go vet
@@ -6,7 +8,7 @@ go:
 	go install
 
 bench:
-	go test -bench=.
+	go test -bench=$(sel)
 
 other:
 	GOARCH=386 go build -o fractx386
