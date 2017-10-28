@@ -7,9 +7,7 @@ import (
 	"os"
 )
 
-type fractalF func(w, h int, x0, y0, x1, y1 float64) image.Image
-
-var fractals = map[string]fractalF{
+var fractals = map[string]func(Params) image.Image{
 	"bw":   NewFractalBW,
 	"gray": NewFractalGray,
 }
@@ -24,7 +22,7 @@ func main() {
 		flag.Usage()
 		os.Exit(2)
 	}
-	img := f(700, 400, -2.5, -1, 1, 1)
+	img := f(Params{700, 400, -2.5, -1, 1, 1})
 
 	file, err := os.Create(*filename)
 	if err != nil {
