@@ -1,7 +1,5 @@
-#include "textflag.h"
-
 // func(x0, y0 float64) int
-TEXT ·iter(SB),NOSPLIT,$0-24
+TEXT ·iter(SB),$0-24
     MOVLPD  x0+0(FP), X0
     MOVLPD  y0+8(FP), X1
     MOVUPD  X0, X4
