@@ -32,12 +32,12 @@ func TestExec(t *testing.T) {
 
 func BenchmarkExecBW(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		exec.Command("fractx", "-f", "mandelbrot.png", "-bw").Run()
+		exec.Command("fractx", "-o", "mandelbrot.png", "-color=bw").Run()
 	}
 }
 
 func BenchmarkExecGS(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		exec.Command("fractx", "-f", "mandelbrot.png").Run()
+		exec.Command("fractx", "-o", "mandelbrot.png", "-color=gray").Run()
 	}
 }
