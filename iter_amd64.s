@@ -45,3 +45,5 @@ loop:
 end:
     MOVQ    AX, ret+16(FP)
     RET
+
+// vim: set expandtab:
