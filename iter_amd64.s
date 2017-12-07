@@ -18,6 +18,8 @@ TEXT ·iter(SB),$0-24
     // X5L - const y0
     // X6L - backup acc
     // X7L - const pbound = 4
+    // AX  - i
+    // CX  - const maxi
 
 loop:
     MOVUPD  X0, X2
