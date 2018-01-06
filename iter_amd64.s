@@ -5,7 +5,7 @@ TEXT ·iter(SB),$0-24
     MOVUPD  X0, X4
     MOVUPD  X1, X5
 
-    MOVLPD  ·pbound(SB), X7
+    MOVLPD  pbound<>(SB), X7
     MOVQ    ·maxi(SB), CX
     MOVQ    $1, AX
 
@@ -17,7 +17,7 @@ TEXT ·iter(SB),$0-24
     // X4L - const x0
     // X5L - const y0
     // X6L - backup acc
-    // X7L - const pbound = 4
+    // X7L - const pbound = 4.0
     // AX  - i
     // CX  - const maxi
 
@@ -45,5 +45,11 @@ loop:
 end:
     MOVQ    AX, ret+16(FP)
     RET
+
+
+#include "textflag.h"
+
+DATA    pbound<>+0(SB)/8, $4.0
+GLOBL   pbound<>(SB),RODATA,$8
 
 // vim: set expandtab:
