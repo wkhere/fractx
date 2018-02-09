@@ -4,6 +4,7 @@ import (
 	"flag"
 	"image"
 	"image/png"
+	"io"
 	"os"
 	"strings"
 )
@@ -25,9 +26,10 @@ func init() {
 }
 
 func main() {
-	color := flag.String("color", "gray", "one of: "+
-		strings.Join(coloringNames, ", "))
-	filename := flag.String("o", "mandelbrot.png", "output file")
+	color := flag.String("color", "gray",
+		"one of: "+strings.Join(coloringNames, ", "))
+	filename := flag.String("o", "mandelbrot.png",
+		"output file or '-' for stdout")
 	flag.Parse()
 
 	f, ok := fractals[*color]
@@ -37,15 +39,25 @@ func main() {
 	}
 	img := f(Params{700, 400, -2.5, -1, 1, 1})
 
-	file, err := os.Create(*filename)
-	if err != nil {
-		panic(err)
-	}
+	w := fileFromName(*filename)
+
 	defer func() {
-		if err = file.Close(); err != nil {
+		if err := w.Close(); err != nil {
 			panic(err)
 		}
 	}()
 
-	png.Encode(file, img)
+	png.Encode(w, img)
+}
+
+func fileFromName(s string) io.WriteCloser {
+	if s == "-" {
+		return os.Stdout
+	} else {
+		w, err := os.Create(s)
+		if err != nil {
+			panic(err)
+		}
+		return w
+	}
 }
