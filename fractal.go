@@ -47,8 +47,6 @@ func (f *FractalGray) writePixel(x, y int, iter int) {
 	f.Pix[pos] = -byte(float64(iter) * f.di)
 }
 
-func (f *FractalGray) Image() image.Image { return f.Gray }
-
 func NewFractalGray(params Params) image.Image {
 	f := &FractalGray{
 		fractal: setup(&params),
