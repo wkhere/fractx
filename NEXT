@@ -2,4 +2,4 @@
 + now having best cycled asm, have go version for other GOARCHs
 - colors
 - size & xy bounds via commandline
-- no global maxi - make it part of fractal struct
++ no global maxi - make it part of fractal struct

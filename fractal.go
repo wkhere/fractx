@@ -7,6 +7,7 @@ import (
 type Params struct {
 	w, h           int
 	x0, y0, x1, y1 float64
+	maxi           int
 }
 
 type fractal struct {
@@ -25,7 +26,7 @@ func setup(p *Params) (f fractal) {
 func (f *fractal) fill() {
 	for y := 0; y < f.h; y++ {
 		for x := 0; x < f.w; x++ {
-			i := iter(f.x0+float64(x)*f.dx, f.y0+float64(y)*f.dy)
+			i := iter(f.x0+float64(x)*f.dx, f.y0+float64(y)*f.dy, f.maxi)
 			f.writePixel(x, y, i)
 		}
 	}
@@ -51,7 +52,7 @@ func NewFractalGray(params Params) image.Image {
 	f := &FractalGray{
 		fractal: setup(&params),
 		Gray:    image.NewGray(image.Rect(0, 0, params.w, params.h)),
-		di:      256 / float64(maxi),
+		di:      256 / float64(params.maxi),
 	}
 	f.fractalImage = f
 	f.fill()
@@ -65,7 +66,7 @@ type FractalBW struct {
 
 func (f *FractalBW) writePixel(x, y int, iter int) {
 	pos := y*f.Stride + x
-	if iter < maxi {
+	if iter < f.maxi {
 		f.Pix[pos] = 255
 	}
 }
@@ -79,5 +80,3 @@ func NewFractalBW(params Params) image.Image {
 	f.fill()
 	return f
 }
-
-var maxi int = 200

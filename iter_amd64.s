@@ -1,12 +1,12 @@
-// func(x0, y0 float64) int
-TEXT ·iter(SB),$0-24
+// func(maxi int, x0, y0 float64) int
+TEXT ·iter(SB),$0-32
     MOVLPD  x0+0(FP), X0
     MOVLPD  y0+8(FP), X1
     MOVUPD  X0, X4
     MOVUPD  X1, X5
 
     MOVLPD  pbound<>(SB), X7
-    MOVQ    ·maxi(SB), CX
+    MOVQ    maxi+16(FP), CX
     MOVQ    $1, AX
 
     // regs:
@@ -43,7 +43,7 @@ loop:
     JL      loop
 
 end:
-    MOVQ    AX, ret+16(FP)
+    MOVQ    AX, ret+24(FP)
     RET
 
 

@@ -37,7 +37,7 @@ func main() {
 		flag.Usage()
 		os.Exit(2)
 	}
-	img := f(Params{700, 400, -2.5, -1, 1, 1})
+	img := f(Params{700, 400, -2.5, -1, 1, 1, 200})
 
 	w := fileFromName(*filename)
 
