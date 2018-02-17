@@ -2,11 +2,12 @@ sel=.	# selection for test/bench
 
 go:
 	go fmt
-	go build
+	go build # needed because Exec is also tested
 	go test
 	go install
 
 bench:
+	go build
 	go test -bench=$(sel)
 
 other:
