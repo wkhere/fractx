@@ -2,7 +2,6 @@ sel=.	# selection for test/bench
 
 go:
 	go fmt
-	go vet
 	go build
 	go test
 	go install
