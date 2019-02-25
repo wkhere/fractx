@@ -1,5 +1,9 @@
 + use Go iter for comparison
 + now having best cycled asm, have go version for other GOARCHs
++ no global maxi - make it part of fractal struct
+
+- don't actually do exec tests - it's confusing;
+  run from API to file, convert and test md5 then
+
 - colors
 - size & xy bounds via commandline
-+ no global maxi - make it part of fractal struct
