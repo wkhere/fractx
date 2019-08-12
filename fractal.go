@@ -4,79 +4,61 @@ import (
 	"image"
 )
 
-type Params struct {
+type Fractal struct {
 	w, h           int
 	x0, y0, x1, y1 float64
 	maxi           int
 }
 
-type fractal struct {
-	Params
-	dx, dy float64
-	fractalImage
-}
-
-func setup(p *Params) (f fractal) {
-	f.Params = *p
-	f.dx = (p.x1 - p.x0) / float64(p.w)
-	f.dy = (p.y1 - p.y0) / float64(p.h)
-	return
-}
-
-func (f *fractal) fill() {
+func (f *Fractal) Fill(image FractalImage) {
+	dx := (f.x1 - f.x0) / float64(f.w)
+	dy := (f.y1 - f.y0) / float64(f.h)
 	for y := 0; y < f.h; y++ {
 		for x := 0; x < f.w; x++ {
-			i := iter(f.x0+float64(x)*f.dx, f.y0+float64(y)*f.dy, f.maxi)
-			f.writePixel(x, y, i)
+			i := iter(f.x0+float64(x)*dx, f.y0+float64(y)*dy, f.maxi)
+			image.writePixel(x, y, i)
 		}
 	}
 }
 
-type fractalImage interface {
+type FractalImage interface {
+	image.Image
 	// writePixel writes pixel data for a given iteration.
 	writePixel(x, y int, iter int)
 }
 
-type FractalGray struct {
-	fractal
+type grayImage struct {
 	*image.Gray
 	di float64
 }
 
-func (f *FractalGray) writePixel(x, y int, iter int) {
-	pos := y*f.Stride + x
-	f.Pix[pos] = -byte(float64(iter) * f.di)
+func (img *grayImage) writePixel(x, y int, iter int) {
+	pos := y*img.Stride + x
+	img.Pix[pos] = -byte(float64(iter) * img.di)
 }
 
-func NewFractalGray(params Params) image.Image {
-	f := &FractalGray{
-		fractal: setup(&params),
-		Gray:    image.NewGray(image.Rect(0, 0, params.w, params.h)),
-		di:      256 / float64(params.maxi),
+func NewGrayImage(f *Fractal) FractalImage {
+	return &grayImage{
+		Gray: image.NewGray(image.Rect(0, 0, f.w, f.h)),
+		di:   256 / float64(f.maxi),
 	}
-	f.fractalImage = f
-	f.fill()
-	return f
 }
 
-type FractalBW struct {
-	fractal
+type bwImage struct {
 	*image.Gray
+	maxi int
 }
 
-func (f *FractalBW) writePixel(x, y int, iter int) {
-	pos := y*f.Stride + x
-	if iter < f.maxi {
-		f.Pix[pos] = 255
+func (img *bwImage) writePixel(x, y int, iter int) {
+	pos := y*img.Stride + x
+	if iter < img.maxi {
+		img.Pix[pos] = 255
 	}
 }
 
-func NewFractalBW(params Params) image.Image {
-	f := &FractalBW{
-		fractal: setup(&params),
-		Gray:    image.NewGray(image.Rect(0, 0, params.w, params.h)),
+func NewBWImage(f *Fractal) FractalImage {
+	return &bwImage{
+		Gray: image.NewGray(image.Rect(0, 0, f.w, f.h)),
+		maxi: f.maxi,
 	}
-	f.fractalImage = f
-	f.fill()
-	return f
 }

@@ -4,16 +4,18 @@ import (
 	"testing"
 )
 
-var params = Params{700, 400, -2.5, -1, 1, 1, 200}
+var fractal = &Fractal{700, 400, -2.5, -1, 1, 1, 200}
 
 func BenchmarkFractalBW(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		NewFractalBW(params)
+		img := NewBWImage(fractal)
+		fractal.Fill(img)
 	}
 }
 
 func BenchmarkFractalGray(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		NewFractalGray(params)
+		img := NewGrayImage(fractal)
+		fractal.Fill(img)
 	}
 }

@@ -2,24 +2,23 @@ package main
 
 import (
 	"flag"
-	"image"
 	"image/png"
 	"io"
 	"os"
 	"strings"
 )
 
-var fractals = map[string]func(Params) image.Image{
-	"bw":   NewFractalBW,
-	"gray": NewFractalGray,
+var imageGenerators = map[string]func(*Fractal) FractalImage{
+	"bw":   NewBWImage,
+	"gray": NewGrayImage,
 }
 
 var coloringNames []string
 
 func init() {
-	coloringNames = make([]string, len(fractals))
+	coloringNames = make([]string, len(imageGenerators))
 	i := 0
-	for k := range fractals {
+	for k := range imageGenerators {
 		coloringNames[i] = k
 		i++
 	}
@@ -32,12 +31,16 @@ func main() {
 		"output file or '-' for stdout")
 	flag.Parse()
 
-	f, ok := fractals[*color]
+	imageGen, ok := imageGenerators[*color]
 	if !ok {
 		flag.Usage()
 		os.Exit(2)
 	}
-	img := f(Params{700, 400, -2.5, -1, 1, 1, 200})
+
+	f := &Fractal{700, 400, -2.5, -1, 1, 1, 200}
+
+	img := imageGen(f)
+	f.Fill(img)
 
 	w := fileFromName(*filename)
 
