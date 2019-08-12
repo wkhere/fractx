@@ -25,13 +25,22 @@ func init() {
 }
 
 func main() {
-	color := flag.String("color", "gray",
-		"one of: "+strings.Join(coloringNames, ", "))
-	filename := flag.String("o", "mandelbrot.png",
-		"output file or '-' for stdout")
+	var (
+		color, filename string
+	)
+	flag.StringVar(
+		&color, "color",
+		"gray",
+		"one of: "+strings.Join(coloringNames, ", "),
+	)
+	flag.StringVar(
+		&filename, "o",
+		"mandelbrot.png",
+		"output file or '-' for stdout",
+	)
 	flag.Parse()
 
-	imageGen, ok := imageGenerators[*color]
+	imageGen, ok := imageGenerators[color]
 	if !ok {
 		flag.Usage()
 		os.Exit(2)
@@ -42,7 +51,7 @@ func main() {
 	img := imageGen(f)
 	f.Fill(img)
 
-	w := fileFromName(*filename)
+	w := fileFromName(filename)
 
 	defer func() {
 		if err := w.Close(); err != nil {
