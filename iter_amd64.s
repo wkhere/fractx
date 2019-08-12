@@ -1,4 +1,4 @@
-// func(maxi int, x0, y0 float64) int
+// iter(x0, y0 float64, maxi int) int
 TEXT ·iter(SB),$0-32
     MOVLPD  x0+0(FP), X0
     MOVLPD  y0+8(FP), X1
