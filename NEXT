@@ -2,8 +2,9 @@
 + now having best cycled asm, have go version for other GOARCHs
 + no global maxi - make it part of fractal struct
 
-- don't actually do exec tests - it's confusing;
-  run from API to file, convert and test md5 then
++ don't actually do exec tests - it's confusing
+  + run from API, encode and test md5 then - via Writers
+  + don't run exec benchmarks
 
 - colors
 - size & xy bounds via commandline
