@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"image/png"
 	"io"
 	"os"
@@ -53,16 +54,20 @@ func main() {
 
 	w, err := fileFromName(filename)
 	if err != nil {
-		panic(err)
+		die(fmt.Errorf("failed creating output file: %v", err))
 	}
 
 	defer func() {
-		if err := w.Close(); err != nil {
-			panic(err)
+		if err = w.Close(); err != nil {
+			die(fmt.Errorf("failed closing output file: %v", err))
 		}
 	}()
 
-	png.Encode(w, img)
+	err = png.Encode(w, img)
+	if err != nil {
+		die(fmt.Errorf("failed writing to output file: %v", err))
+	}
+
 }
 
 func fileFromName(s string) (io.WriteCloser, error) {
@@ -70,4 +75,9 @@ func fileFromName(s string) (io.WriteCloser, error) {
 		return os.Stdout, nil
 	}
 	return os.Create(s)
+}
+
+func die(err error) {
+	fmt.Fprintln(os.Stderr, "fractx:", err)
+	os.Exit(1)
 }
