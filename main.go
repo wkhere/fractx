@@ -51,7 +51,10 @@ func main() {
 	img := imageGen(f)
 	f.Fill(img)
 
-	w := fileFromName(filename)
+	w, err := fileFromName(filename)
+	if err != nil {
+		panic(err)
+	}
 
 	defer func() {
 		if err := w.Close(); err != nil {
@@ -62,13 +65,9 @@ func main() {
 	png.Encode(w, img)
 }
 
-func fileFromName(s string) io.WriteCloser {
+func fileFromName(s string) (io.WriteCloser, error) {
 	if s == "-" {
-		return os.Stdout
+		return os.Stdout, nil
 	}
-	w, err := os.Create(s)
-	if err != nil {
-		panic(err)
-	}
-	return w
+	return os.Create(s)
 }
