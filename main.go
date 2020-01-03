@@ -65,11 +65,10 @@ func main() {
 func fileFromName(s string) io.WriteCloser {
 	if s == "-" {
 		return os.Stdout
-	} else {
-		w, err := os.Create(s)
-		if err != nil {
-			panic(err)
-		}
-		return w
 	}
+	w, err := os.Create(s)
+	if err != nil {
+		panic(err)
+	}
+	return w
 }
