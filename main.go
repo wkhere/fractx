@@ -47,11 +47,6 @@ func main() {
 		os.Exit(2)
 	}
 
-	f := &Fractal{700, 400, -2.5, -1, 1, 1, 200}
-
-	img := imageGen(f)
-	f.Fill(img)
-
 	w, err := fileFromName(filename)
 	if err != nil {
 		die(fmt.Errorf("failed creating output file: %v", err))
@@ -62,6 +57,11 @@ func main() {
 			die(fmt.Errorf("failed closing output file: %v", err))
 		}
 	}()
+
+	f := &Fractal{700, 400, -2.5, -1, 1, 1, 200}
+
+	img := imageGen(f)
+	f.Fill(img)
 
 	err = png.Encode(w, img)
 	if err != nil {
