@@ -14,15 +14,14 @@ var imageGenerators = map[string]func(*Fractal) FractalImage{
 	"gray": NewGrayImage,
 }
 
-var coloringNames []string
-
-func init() {
-	coloringNames = make([]string, len(imageGenerators))
+func coloringNames() (ss []string) {
+	ss = make([]string, len(imageGenerators))
 	i := 0
 	for k := range imageGenerators {
-		coloringNames[i] = k
+		ss[i] = k
 		i++
 	}
+	return
 }
 
 func main() {
@@ -38,7 +37,7 @@ func main() {
 	flag.StringVar(
 		&color, "color",
 		"gray",
-		"one of: "+strings.Join(coloringNames, ", "),
+		"one of: "+strings.Join(coloringNames(), ", "),
 	)
 	flag.StringVar(
 		&filename, "o",
