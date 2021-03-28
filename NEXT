@@ -8,3 +8,5 @@
 
 - colors
 - size & xy bounds via commandline
+
+- there is grayImage bug - black area on the left, with maxi>256
