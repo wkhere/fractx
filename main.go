@@ -27,7 +27,13 @@ func init() {
 
 func main() {
 	var (
+		maxi            int
 		color, filename string
+	)
+	flag.IntVar(
+		&maxi, "maxi",
+		200,
+		"max number of iterations",
 	)
 	flag.StringVar(
 		&color, "color",
@@ -58,7 +64,7 @@ func main() {
 		}
 	}()
 
-	f := &Fractal{700, 400, -2.5, -1, 1, 1, 200}
+	f := &Fractal{700, 400, -2.5, -1, 1, 1, maxi}
 
 	img := imageGen(f)
 	f.Fill(img)
