@@ -10,3 +10,5 @@
 - size & xy bounds via commandline
 
 - there is grayImage bug - black area on the left, with maxi>256
+
+- with -h, print usage to stdout not stderr
