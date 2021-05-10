@@ -11,19 +11,26 @@ type FractalImage interface {
 
 type grayImage struct {
 	*image.Gray
-	di float64
+	maxi int
+	di   float64
 }
 
 func NewGrayImage(f *Fractal) FractalImage {
 	return &grayImage{
 		Gray: image.NewGray(image.Rect(0, 0, f.w, f.h)),
+		maxi: f.maxi,
 		di:   256 / float64(f.maxi),
 	}
 }
 
 func (img *grayImage) writePixel(x, y int, iter int) {
 	pos := y*img.Stride + x
-	img.Pix[pos] = -byte(float64(iter) * img.di)
+	switch {
+	case iter >= img.maxi:
+		img.Pix[pos] = 0
+	default:
+		img.Pix[pos] = 255 - byte(float64(iter)*img.di)
+	}
 }
 
 type bwImage struct {

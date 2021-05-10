@@ -19,7 +19,7 @@ func TestPPMContent(t *testing.T) {
 		md5      string
 	}{
 		{NewBWImage, "25bb7c32464ff89ed9773ac479383f66"},
-		{NewGrayImage, "6c9a199e7620158bd256f59a1ce1e88a"},
+		{NewGrayImage, "0bf2783cd5d36fadaf9be441ba3afdbf"},
 	}
 
 	ppmOpt := &netpbm.EncodeOptions{Format: netpbm.PPM}
