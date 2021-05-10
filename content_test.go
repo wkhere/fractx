@@ -15,11 +15,11 @@ func TestPPMContent(t *testing.T) {
 	//   convert mandelbrot.png test.ppm
 	// then md5sum PPM file.
 	var tab = []struct {
-		imageGen func(*Fractal) FractalImage
 		md5      string
+		imageGen func(*Fractal) FractalImage
 	}{
-		{NewBWImage, "25bb7c32464ff89ed9773ac479383f66"},
-		{NewGrayImage, "0bf2783cd5d36fadaf9be441ba3afdbf"},
+		{"25bb7c32464ff89ed9773ac479383f66", NewBWImage},
+		{"0bf2783cd5d36fadaf9be441ba3afdbf", NewGrayImage},
 	}
 
 	ppmOpt := &netpbm.EncodeOptions{Format: netpbm.PPM}
