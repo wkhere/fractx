@@ -7,7 +7,7 @@ go:
 	go install
 
 bench:
-	go test -bench=$(sel) -count $(cnt)
+	go test -bench=$(sel) -count $(cnt) -benchmem
 
 other:
 	GOARCH=386 go build -o fractx386
