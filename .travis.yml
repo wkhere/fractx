@@ -1,6 +1,0 @@
-language: go
-go:
-  - 1.17.x
-
-script:
-  - env GO111MODULE=on make
