@@ -25,10 +25,7 @@ func NewGrayImage(f *Fractal) FractalImage {
 
 func (img *grayImage) writePixel(x, y int, iter int) {
 	pos := y*img.Stride + x
-	switch {
-	case iter >= img.maxi:
-		img.Pix[pos] = 0
-	default:
+	if iter < img.maxi {
 		img.Pix[pos] = 255 - byte(float64(iter)*img.di)
 	}
 }
