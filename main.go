@@ -5,9 +5,6 @@ import (
 	"image/png"
 	"io"
 	"os"
-	"strings"
-
-	"github.com/spf13/pflag"
 )
 
 const prog = "fractx"
@@ -16,6 +13,8 @@ type config struct {
 	maxi     int
 	imageGen func(*Fractal) FractalImage
 	filename string
+
+	help func(io.Writer)
 }
 
 var imageGenerators = map[string]func(*Fractal) FractalImage{
@@ -23,63 +22,15 @@ var imageGenerators = map[string]func(*Fractal) FractalImage{
 	"gray": NewGrayImage,
 }
 
-func coloringNames() (ss []string) {
-	ss = make([]string, len(imageGenerators))
-	i := 0
-	for k := range imageGenerators {
-		ss[i] = k
-		i++
-	}
-	return
-}
-
-func parseArgs(args []string) (conf config) {
-	var (
-		colorAvail = strings.Join(coloringNames(), ", ")
-		color      string
-		help       bool
-	)
-
-	flag := pflag.NewFlagSet("flags", pflag.ContinueOnError)
-	flag.SortFlags = false
-
-	flag.IntVarP(&conf.maxi, "maxi", "i", 200,
-		"max number of iterations")
-	flag.StringVarP(&color, "color", "c", "gray",
-		"one of: "+colorAvail)
-	flag.StringVarP(&conf.filename, "output", "o", "mandelbrot.png",
-		"output file or '-' for stdout")
-
-	flag.BoolVarP(&help, "help", "h", false,
-		"show this help and exit")
-
-	flag.Usage = func() {
-		fmt.Fprintln(flag.Output(), "Generate Mandelbrot fractal.")
-		fmt.Fprintln(flag.Output(), "Usage:", prog, "[FLAGS]")
-		flag.PrintDefaults()
-	}
-
-	err := flag.Parse(args)
+func main() {
+	conf, err := parseArgs(os.Args[1:])
 	if err != nil {
 		die(2, err)
 	}
-	if help {
-		flag.SetOutput(os.Stdout)
-		flag.Usage()
+	if conf.help != nil {
+		conf.help(os.Stdout)
 		die(0)
 	}
-
-	var ok bool
-	conf.imageGen, ok = imageGenerators[color]
-	if !ok {
-		die(2, "wrong color:", color+", should be one of:", colorAvail)
-	}
-
-	return conf
-}
-
-func main() {
-	conf := parseArgs(os.Args[1:])
 
 	w, err := fileFromName(conf.filename)
 	if err != nil {
