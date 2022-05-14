@@ -1,13 +1,22 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"image/png"
 	"io"
 	"os"
 	"strings"
+
+	"github.com/spf13/pflag"
 )
+
+const prog = "fractx"
+
+type config struct {
+	maxi     int
+	imageGen func(*Fractal) FractalImage
+	filename string
+}
 
 var imageGenerators = map[string]func(*Fractal) FractalImage{
 	"bw":   NewBWImage,
@@ -24,53 +33,73 @@ func coloringNames() (ss []string) {
 	return
 }
 
-func main() {
+func parseArgs(args []string) (conf config) {
 	var (
-		maxi            int
-		color, filename string
+		colorAvail = strings.Join(coloringNames(), ", ")
+		color      string
+		help       bool
 	)
-	flag.IntVar(
-		&maxi, "maxi",
-		200,
-		"max number of iterations",
-	)
-	flag.StringVar(
-		&color, "color",
-		"gray",
-		"one of: "+strings.Join(coloringNames(), ", "),
-	)
-	flag.StringVar(
-		&filename, "o",
-		"mandelbrot.png",
-		"output file or '-' for stdout",
-	)
-	flag.Parse()
 
-	imageGen, ok := imageGenerators[color]
-	if !ok {
-		flag.Usage()
-		os.Exit(2)
+	flag := pflag.NewFlagSet("flags", pflag.ContinueOnError)
+	flag.SortFlags = false
+
+	flag.IntVarP(&conf.maxi, "maxi", "i", 200,
+		"max number of iterations")
+	flag.StringVarP(&color, "color", "c", "gray",
+		"one of: "+colorAvail)
+	flag.StringVarP(&conf.filename, "output", "o", "mandelbrot.png",
+		"output file or '-' for stdout")
+
+	flag.BoolVarP(&help, "help", "h", false,
+		"show this help and exit")
+
+	flag.Usage = func() {
+		fmt.Fprintln(flag.Output(), "Generate Mandelbrot fractal.")
+		fmt.Fprintln(flag.Output(), "Usage:", prog, "[FLAGS]")
+		flag.PrintDefaults()
 	}
 
-	w, err := fileFromName(filename)
+	err := flag.Parse(args)
 	if err != nil {
-		die(fmt.Errorf("failed creating output file: %v", err))
+		die(2, err)
+	}
+	if help {
+		flag.SetOutput(os.Stdout)
+		flag.Usage()
+		die(0)
+	}
+
+	var ok bool
+	conf.imageGen, ok = imageGenerators[color]
+	if !ok {
+		die(2, "wrong color:", color+", should be one of:", colorAvail)
+	}
+
+	return conf
+}
+
+func main() {
+	conf := parseArgs(os.Args[1:])
+
+	w, err := fileFromName(conf.filename)
+	if err != nil {
+		die(1, "failed creating output file:", err)
 	}
 
 	defer func() {
 		if err = w.Close(); err != nil {
-			die(fmt.Errorf("failed closing output file: %v", err))
+			die(1, "failed closing output file:", err)
 		}
 	}()
 
-	f := &Fractal{700, 400, -2.5, -1, 1, 1, maxi}
+	f := &Fractal{700, 400, -2.5, -1, 1, 1, conf.maxi}
 
-	img := imageGen(f)
+	img := conf.imageGen(f)
 	f.Fill(img)
 
 	err = png.Encode(w, img)
 	if err != nil {
-		die(fmt.Errorf("failed writing to output file: %v", err))
+		die(1, "failed writing to output file:", err)
 	}
 
 }
@@ -82,7 +111,10 @@ func fileFromName(s string) (io.WriteCloser, error) {
 	return os.Create(s)
 }
 
-func die(err error) {
-	fmt.Fprintln(os.Stderr, "fractx:", err)
-	os.Exit(1)
+func die(exitcode int, msgs ...interface{}) {
+	if len(msgs) > 0 {
+		fmt.Fprint(os.Stderr, prog, ": ")
+		fmt.Fprintln(os.Stderr, msgs...)
+	}
+	os.Exit(exitcode)
 }
