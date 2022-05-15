@@ -10,9 +10,10 @@ import (
 const prog = "fractx"
 
 type config struct {
-	maxi     int
-	imageGen func(*Fractal) FractalImage
-	filename string
+	maxi      int
+	imageGen  func(*Fractal) FractalImage
+	filename  string
+	overwrite bool
 
 	help func(io.Writer)
 }
@@ -32,7 +33,7 @@ func main() {
 		die(0)
 	}
 
-	w, err := fileFromName(conf.filename)
+	w, err := fileFromName(conf.filename, conf.overwrite)
 	if err != nil {
 		die(1, "failed creating output file:", err)
 	}
@@ -55,11 +56,15 @@ func main() {
 
 }
 
-func fileFromName(s string) (io.WriteCloser, error) {
+func fileFromName(s string, overwrite bool) (io.WriteCloser, error) {
 	if s == "-" {
 		return os.Stdout, nil
 	}
-	return os.Create(s)
+	flag := os.O_WRONLY | os.O_CREATE
+	if !overwrite {
+		flag |= os.O_EXCL
+	}
+	return os.OpenFile(s, flag, 0644)
 }
 
 func die(exitcode int, msgs ...interface{}) {

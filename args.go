@@ -24,6 +24,8 @@ func parseArgs(args []string) (conf config, err error) {
 		"one of: "+colorAvail)
 	flag.StringVarP(&conf.filename, "output", "o", "mandelbrot.png",
 		"output file or '-' for stdout")
+	flag.BoolVarP(&conf.overwrite, "overwrite", "O", true,
+		"overwrite output file")
 
 	flag.BoolVarP(&help, "help", "h", false,
 		"show this help and exit")
