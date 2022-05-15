@@ -56,7 +56,7 @@ func main() {
 
 }
 
-func fileFromName(s string, overwrite bool) (io.WriteCloser, error) {
+func fileFromName(s string, overwrite bool) (*os.File, error) {
 	if s == "-" {
 		return os.Stdout, nil
 	}
