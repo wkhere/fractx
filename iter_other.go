@@ -4,7 +4,7 @@ package main
 
 func iter(x0, y0 float64, maxi int) (i int) {
 	x, y := x0, y0
-	for i = 1; ; {
+	for i = 0; ; {
 		xx, yy := x*x, y*y
 		if xx+yy >= 4 {
 			break

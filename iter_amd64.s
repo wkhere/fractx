@@ -10,7 +10,7 @@ TEXT ·iter(SB),$0-32
     XORPD   X7, X7
     MOVLPD  pbound<>(SB), X7
     MOVQ    maxi+16(FP), CX
-    MOVQ    $1, AX
+    XORQ    AX, AX
 
     // regs:
     // X0L - x, xx

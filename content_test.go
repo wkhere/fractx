@@ -21,14 +21,14 @@ func TestPPMContent(t *testing.T) {
 		maxi  int
 	}
 	var tab = []tcdata{
-		{"25bb7c32464ff89ed9773ac479383f66", "bw", 200},
-		{"599a7caed7d1bce58a3d37e0127e4278", "bw", 255},
-		{"59567e6b2808da4d2fb8be3b962e9d54", "bw", 256},
-		{"c07a91142c7b1a81db984b0f8ba927b2", "bw", 257},
-		{"fb4559ac9da7a646b1c0c2edf22db01c", "gray", 255},
-		{"0bf2783cd5d36fadaf9be441ba3afdbf", "gray", 200},
-		{"fb4559ac9da7a646b1c0c2edf22db01c", "gray", 256},
-		{"53ae6f53698470da682eb142e0f713cd", "gray", 257},
+		{"5f37292662ca4b5c5b76bf57dd994aab", "bw", 200},
+		{"59567e6b2808da4d2fb8be3b962e9d54", "bw", 255},
+		{"c07a91142c7b1a81db984b0f8ba927b2", "bw", 256},
+		{"0e80a022e27d45758defd3626c31c843", "bw", 257},
+		{"53ae6f53698470da682eb142e0f713cd", "gray", 255},
+		{"6a7166e93bb7b91c66bb418087876329", "gray", 200},
+		{"53ae6f53698470da682eb142e0f713cd", "gray", 256},
+		{"6f3fc32225cf5a284d2d11fdc73f3deb", "gray", 257},
 	}
 
 	ppmOpt := &netpbm.EncodeOptions{Format: netpbm.PPM}
