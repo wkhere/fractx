@@ -1,10 +1,13 @@
 // iter(x0, y0 float64, maxi int) int
 TEXT ·iter(SB),$0-32
+    XORPD   X0, X0
+    XORPD   X1, X1
     MOVLPD  x0+0(FP), X0
     MOVLPD  y0+8(FP), X1
     MOVUPD  X0, X4
     MOVUPD  X1, X5
 
+    XORPD   X7, X7
     MOVLPD  pbound<>(SB), X7
     MOVQ    maxi+16(FP), CX
     MOVQ    $1, AX
