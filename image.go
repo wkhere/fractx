@@ -17,7 +17,7 @@ type grayImage struct {
 
 func NewGrayImage(f *Fractal) FractalImage {
 	return &grayImage{
-		Gray: image.NewGray(image.Rect(0, 0, f.w, f.h)),
+		Gray: image.NewGray(image.Rect(0, 0, f.size.w, f.size.h)),
 		maxi: f.maxi,
 		di:   256 / float64(f.maxi),
 	}
@@ -37,7 +37,7 @@ type bwImage struct {
 
 func NewBWImage(f *Fractal) FractalImage {
 	return &bwImage{
-		Gray: image.NewGray(image.Rect(0, 0, f.w, f.h)),
+		Gray: image.NewGray(image.Rect(0, 0, f.size.w, f.size.h)),
 		maxi: f.maxi,
 	}
 }

@@ -44,7 +44,7 @@ func main() {
 		}
 	}()
 
-	f := &Fractal{700, 400, -2.5, -1, 1, 1, conf.maxi}
+	f := &Fractal{Size{700, 400}, Rect{-2.5, -1, 1, 1}, conf.maxi}
 
 	img := conf.imageGen(f)
 	f.Fill(img)

@@ -42,7 +42,7 @@ func TestPPMContent(t *testing.T) {
 		t.Run(nameGen(&tc), func(t *testing.T) {
 			t.Parallel()
 
-			fractal := &Fractal{700, 400, -2.5, -1, 1, 1, tc.maxi}
+			fractal := &Fractal{Size{700, 400}, Rect{-2.5, -1, 1, 1}, tc.maxi}
 
 			img := imageGenerators[tc.color](fractal)
 			fractal.Fill(img)
