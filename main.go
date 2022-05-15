@@ -10,6 +10,8 @@ import (
 const prog = "fractx"
 
 type config struct {
+	size      Size
+	bounds    Rect
 	maxi      int
 	imageGen  func(*Fractal) FractalImage
 	filename  string
@@ -44,7 +46,7 @@ func main() {
 		}
 	}()
 
-	f := &Fractal{Size{700, 400}, Rect{-2.5, -1, 1, 1}, conf.maxi}
+	f := &Fractal{conf.size, conf.bounds, conf.maxi}
 
 	img := conf.imageGen(f)
 	f.Fill(img)

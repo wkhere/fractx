@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-var fractal = &Fractal{Size{700, 400}, Rect{-2.5, -1, 1, 1}, 200}
+var fractal = &Fractal{DefaultSize, DefaultBounds, DefaultMaxI}
 
 func BenchmarkFractalBW(b *testing.B) {
 	for i := 0; i < b.N; i++ {
