@@ -23,7 +23,7 @@ func parseArgs(args []string) (conf config, err error) {
 	flag.VarP(&conf.size, "size", "s", "pixel size")
 	flag.VarP(&conf.bounds, "bounds", "b", "float-plane bounds")
 
-	flag.IntVarP(&conf.maxi, "maxi", "i", DefaultMaxI,
+	flag.UintVarP(&conf.maxi, "maxi", "i", DefaultMaxI,
 		"max number of iterations")
 	flag.StringVarP(&color, "color", "c", "gray",
 		"one of: "+colorAvail)

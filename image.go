@@ -6,12 +6,12 @@ type FractalImage interface {
 	image.Image
 
 	// writePixel writes pixel data for a given iteration.
-	writePixel(x, y int, iter int)
+	writePixel(x, y int, iter uint)
 }
 
 type grayImage struct {
 	*image.Gray
-	maxi int
+	maxi uint
 	di   float64
 }
 
@@ -23,7 +23,7 @@ func NewGrayImage(f *Fractal) FractalImage {
 	}
 }
 
-func (img *grayImage) writePixel(x, y int, iter int) {
+func (img *grayImage) writePixel(x, y int, iter uint) {
 	pos := y*img.Stride + x
 	if iter < img.maxi {
 		img.Pix[pos] = 255 - byte(float64(iter)*img.di)
@@ -32,7 +32,7 @@ func (img *grayImage) writePixel(x, y int, iter int) {
 
 type bwImage struct {
 	*image.Gray
-	maxi int
+	maxi uint
 }
 
 func NewBWImage(f *Fractal) FractalImage {
@@ -42,7 +42,7 @@ func NewBWImage(f *Fractal) FractalImage {
 	}
 }
 
-func (img *bwImage) writePixel(x, y int, iter int) {
+func (img *bwImage) writePixel(x, y int, iter uint) {
 	pos := y*img.Stride + x
 	if iter < img.maxi {
 		img.Pix[pos] = 255

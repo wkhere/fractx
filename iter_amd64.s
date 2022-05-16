@@ -1,4 +1,4 @@
-// iter(x0, y0 float64, maxi int) int
+// iter(x0, y0 float64, maxi uint) uint
 TEXT ·iter(SB),$0-32
     XORPD   X0, X0
     XORPD   X1, X1

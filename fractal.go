@@ -11,7 +11,7 @@ type Rect struct {
 type Fractal struct {
 	size   Size
 	bounds Rect
-	maxi   int
+	maxi   uint
 }
 
 func (f *Fractal) Fill(image FractalImage) {

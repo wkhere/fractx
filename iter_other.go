@@ -2,7 +2,7 @@
 
 package main
 
-func iter(x0, y0 float64, maxi int) (i int) {
+func iter(x0, y0 float64, maxi uint) (i uint) {
 	x, y := x0, y0
 	for i = 0; ; {
 		xx, yy := x*x, y*y

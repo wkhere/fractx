@@ -18,7 +18,7 @@ func TestPPMContent(t *testing.T) {
 	type tcdata struct {
 		md5   string
 		color string
-		maxi  int
+		maxi  uint
 	}
 	var tab = []tcdata{
 		{"5f37292662ca4b5c5b76bf57dd994aab", "bw", 200},

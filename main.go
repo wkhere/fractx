@@ -12,7 +12,7 @@ const prog = "fractx"
 type config struct {
 	size      Size
 	bounds    Rect
-	maxi      int
+	maxi      uint
 	imageGen  func(*Fractal) FractalImage
 	filename  string
 	overwrite bool
