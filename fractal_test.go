@@ -19,3 +19,10 @@ func BenchmarkFractalGray(b *testing.B) {
 		fractal.Fill(img)
 	}
 }
+
+func BenchmarkFractalCol1(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		img := NewPalettedImage(colorset1, fractal)
+		fractal.Fill(img)
+	}
+}

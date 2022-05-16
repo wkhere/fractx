@@ -29,6 +29,7 @@ func TestPPMContent(t *testing.T) {
 		{"53ae6f53698470da682eb142e0f713cd", "gray", 255},
 		{"53ae6f53698470da682eb142e0f713cd", "gray", 256},
 		{"6f3fc32225cf5a284d2d11fdc73f3deb", "gray", 257},
+		{"2b44d789990562077ecfd196ecec1474", "col1", 100},
 	}
 
 	ppmOpt := &netpbm.EncodeOptions{Format: netpbm.PPM}

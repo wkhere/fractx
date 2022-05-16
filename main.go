@@ -23,6 +23,9 @@ type config struct {
 var imageGenerators = map[string]func(*Fractal) FractalImage{
 	"bw":   NewBWImage,
 	"gray": NewGrayImage,
+	"col1": func(f *Fractal) FractalImage {
+		return NewPalettedImage(colorset1, f)
+	},
 }
 
 func main() {

@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -25,7 +26,7 @@ func parseArgs(args []string) (conf config, err error) {
 
 	flag.UintVarP(&conf.maxi, "maxi", "i", DefaultMaxI,
 		"max number of iterations")
-	flag.StringVarP(&color, "color", "c", "gray",
+	flag.StringVarP(&color, "color", "c", "col1",
 		"one of: "+colorAvail)
 	flag.StringVarP(&conf.filename, "output", "o", "mandelbrot.png",
 		"output file or '-' for stdout")
@@ -71,6 +72,7 @@ func coloringNames() (ss []string) {
 		ss[i] = k
 		i++
 	}
+	sort.Strings(ss)
 	return
 }
 
