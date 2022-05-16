@@ -24,8 +24,8 @@ func NewGrayImage(f *Fractal) FractalImage {
 }
 
 func (img *grayImage) writePixel(x, y int, iter uint) {
-	pos := y*img.Stride + x
 	if iter < img.maxi {
+		pos := y*img.Stride + x
 		img.Pix[pos] = 255 - byte(float64(iter)*img.di)
 	}
 }
@@ -43,8 +43,8 @@ func NewBWImage(f *Fractal) FractalImage {
 }
 
 func (img *bwImage) writePixel(x, y int, iter uint) {
-	pos := y*img.Stride + x
 	if iter < img.maxi {
+		pos := y*img.Stride + x
 		img.Pix[pos] = 255
 	}
 }
