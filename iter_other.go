@@ -1,6 +1,6 @@
 //go:build !amd64
 
-package main
+package fractx
 
 func iter(x0, y0 float64, maxi uint) (i uint) {
 	x, y := x0, y0

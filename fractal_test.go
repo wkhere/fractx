@@ -1,4 +1,4 @@
-package main
+package fractx
 
 import (
 	"testing"
@@ -22,7 +22,7 @@ func BenchmarkFractalGray(b *testing.B) {
 
 func BenchmarkFractalCol1(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		img := NewPalettedImage(colorset1, fractal)
+		img := NewPalettedImage(Colorset1, fractal)
 		fractal.Fill(img)
 	}
 }

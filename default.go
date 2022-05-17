@@ -1,4 +1,4 @@
-package main
+package fractx
 
 var (
 	DefaultSize   = Size{700, 400}

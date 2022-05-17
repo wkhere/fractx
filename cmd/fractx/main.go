@@ -5,27 +5,21 @@ import (
 	"image/png"
 	"io"
 	"os"
+
+	fx "github.com/wkhere/fractx"
 )
 
 const prog = "fractx"
 
 type config struct {
-	size      Size
-	bounds    Rect
+	size      fx.Size
+	bounds    fx.Rect
 	maxi      uint
-	imageGen  func(*Fractal) FractalImage
+	imageGen  func(*fx.Fractal) fx.FractalImage
 	filename  string
 	overwrite bool
 
 	help func(io.Writer)
-}
-
-var imageGenerators = map[string]func(*Fractal) FractalImage{
-	"bw":   NewBWImage,
-	"gray": NewGrayImage,
-	"col1": func(f *Fractal) FractalImage {
-		return NewPalettedImage(colorset1, f)
-	},
 }
 
 func main() {
@@ -49,7 +43,7 @@ func main() {
 		}
 	}()
 
-	f := &Fractal{conf.size, conf.bounds, conf.maxi}
+	f := &fx.Fractal{conf.size, conf.bounds, conf.maxi}
 
 	img := conf.imageGen(f)
 	f.Fill(img)

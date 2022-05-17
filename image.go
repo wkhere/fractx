@@ -1,9 +1,11 @@
-package main
+package fractx
 
 import (
 	"image"
 	"image/color"
 	"sort"
+
+	colorutil "github.com/wkhere/fractx/color"
 )
 
 type FractalImage interface {
@@ -11,6 +13,25 @@ type FractalImage interface {
 
 	// writePixel writes pixel data for a given iteration.
 	writePixel(x, y int, iter uint)
+}
+
+var ImageGenerators = map[string]func(*Fractal) FractalImage{
+	"bw":   NewBWImage,
+	"gray": NewGrayImage,
+	"col1": func(f *Fractal) FractalImage {
+		return NewPalettedImage(Colorset1, f)
+	},
+}
+
+func ImageGeneratorNames() (ss []string) {
+	ss = make([]string, len(ImageGenerators))
+	i := 0
+	for k := range ImageGenerators {
+		ss[i] = k
+		i++
+	}
+	sort.Strings(ss)
+	return
 }
 
 type grayImage struct {
@@ -21,9 +42,9 @@ type grayImage struct {
 
 func NewGrayImage(f *Fractal) FractalImage {
 	return &grayImage{
-		Gray: image.NewGray(image.Rect(0, 0, f.size.w, f.size.h)),
-		maxi: f.maxi,
-		di:   256 / float64(f.maxi),
+		Gray: image.NewGray(image.Rect(0, 0, f.Size.W, f.Size.H)),
+		maxi: f.MaxI,
+		di:   256 / float64(f.MaxI),
 	}
 }
 
@@ -41,8 +62,8 @@ type bwImage struct {
 
 func NewBWImage(f *Fractal) FractalImage {
 	return &bwImage{
-		Gray: image.NewGray(image.Rect(0, 0, f.size.w, f.size.h)),
-		maxi: f.maxi,
+		Gray: image.NewGray(image.Rect(0, 0, f.Size.W, f.Size.H)),
+		maxi: f.MaxI,
 	}
 }
 
@@ -59,7 +80,7 @@ type palettedImage struct {
 	isteps []uint
 }
 
-func NewPalettedImage(cs colorset, f *Fractal) FractalImage {
+func NewPalettedImage(cs Colorset, f *Fractal) FractalImage {
 	var (
 		colors    = make([]color.Color, len(cs)+1)
 		itersteps = make([]uint, len(cs))
@@ -67,16 +88,16 @@ func NewPalettedImage(cs colorset, f *Fractal) FractalImage {
 	sort.Sort(cs)
 	colors[0] = color.Black
 	for j, v := range cs {
-		itersteps[j] = f.maxi * v.iterPercent / 100
-		colors[j+1] = MustDecodeColor(v.color)
+		itersteps[j] = f.MaxI * v.IterPercent / 100
+		colors[j+1] = colorutil.MustDecode(v.Color)
 	}
 
 	return &palettedImage{
 		Paletted: image.NewPaletted(
-			image.Rect(0, 0, f.size.w, f.size.h),
+			image.Rect(0, 0, f.Size.W, f.Size.H),
 			colors,
 		),
-		maxi:   f.maxi,
+		maxi:   f.MaxI,
 		isteps: itersteps,
 	}
 }

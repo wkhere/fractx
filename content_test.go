@@ -1,4 +1,4 @@
-package main
+package fractx
 
 import (
 	"crypto/md5"
@@ -45,7 +45,7 @@ func TestPPMContent(t *testing.T) {
 
 			fractal := &Fractal{DefaultSize, DefaultBounds, tc.maxi}
 
-			img := imageGenerators[tc.color](fractal)
+			img := ImageGenerators[tc.color](fractal)
 			fractal.Fill(img)
 
 			hash := md5.New()

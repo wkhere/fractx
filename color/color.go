@@ -1,4 +1,4 @@
-package main
+package color
 
 import (
 	"encoding/hex"
@@ -6,7 +6,7 @@ import (
 	"image/color"
 )
 
-var colornames = map[string]string{
+var Names = map[string]string{
 	"black":    "000000",
 	"white":    "ffffff",
 	"yellow":   "ffff00",
@@ -19,7 +19,7 @@ var colornames = map[string]string{
 	"green":    "00ff00",
 }
 
-func DecodeHexColor(s string) (c color.Color, _ error) {
+func DecodeHex(s string) (c color.Color, _ error) {
 	b, err := hex.DecodeString(s)
 	if err != nil {
 		return c, err
@@ -34,16 +34,16 @@ func DecodeHexColor(s string) (c color.Color, _ error) {
 	}
 }
 
-func DecodeColor(s string) (color.Color, error) {
-	x, ok := colornames[s]
+func Decode(s string) (color.Color, error) {
+	x, ok := Names[s]
 	if ok {
 		s = x
 	}
-	return DecodeHexColor(s)
+	return DecodeHex(s)
 }
 
-func MustDecodeColor(s string) color.Color {
-	c, err := DecodeColor(s)
+func MustDecode(s string) color.Color {
+	c, err := Decode(s)
 	if err != nil {
 		panic(err)
 	}
