@@ -24,10 +24,12 @@ func DecodeHex(s string) (c color.Color, _ error) {
 	if err != nil {
 		return c, err
 	}
-	switch {
-	case len(b) == 3:
+	switch len(b) {
+	case 3:
 		return color.RGBA{b[0], b[1], b[2], 0xff}, nil
-	case len(b) == 1:
+	case 4:
+		return color.RGBA{b[0], b[1], b[2], b[3]}, nil
+	case 1:
 		return color.Gray{b[0]}, nil
 	default:
 		return c, fmt.Errorf("expected 3-byte or 1-byte hex, got: %s", s)

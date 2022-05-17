@@ -14,6 +14,8 @@ func TestDecodeBasic(t *testing.T) {
 		{"white", color.White},
 		{"000000", color.Black},
 		{"00", color.Black},
+		{"000000ff", color.Black},
+		{"ffffffff", color.White},
 	}
 
 	for i, tc := range tab {
