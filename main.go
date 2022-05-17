@@ -65,7 +65,7 @@ func fileFromName(s string, overwrite bool) (*os.File, error) {
 	if s == "-" {
 		return os.Stdout, nil
 	}
-	flag := os.O_WRONLY | os.O_CREATE
+	flag := os.O_WRONLY | os.O_CREATE | os.O_TRUNC
 	if !overwrite {
 		flag |= os.O_EXCL
 	}
