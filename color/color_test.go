@@ -26,8 +26,8 @@ func TestDecodeBasic(t *testing.T) {
 		}
 
 		var c1, c2 [4]uint32
-		c1[0], c1[1], c1[2], c1[3] = res.RGBA()
-		c2[0], c2[1], c2[2], c2[3] = tc.want.RGBA()
+		c1[0], c1[1], c1[2], c1[3] = tc.want.RGBA()
+		c2[0], c2[1], c2[2], c2[3] = res.RGBA()
 		if c1 != c2 {
 			t.Errorf("tc[%d] mismatch\nhave %v\nwant %v", i, res, tc.want)
 		}
