@@ -7,8 +7,8 @@ import (
 )
 
 var Names = map[string]string{
-	"black":    "000000",
-	"white":    "ffffff",
+	"black":    "00",
+	"white":    "ff",
 	"yellow":   "ffff00",
 	"orange":   "ff8000",
 	"red":      "ff0000",
