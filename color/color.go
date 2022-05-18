@@ -51,3 +51,17 @@ func MustDecode(s string) color.Color {
 	}
 	return c
 }
+
+func EncodeHex(c color.Color) string {
+	b := To8bit(c)
+	return hex.EncodeToString(b[:])
+}
+
+func To8bit(c color.Color) (res [4]uint8) {
+	r, g, b, a := c.RGBA()
+	res[0] = uint8(r >> 8)
+	res[1] = uint8(g >> 8)
+	res[2] = uint8(b >> 8)
+	res[3] = uint8(a >> 8)
+	return
+}
