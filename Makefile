@@ -14,7 +14,11 @@ fuzz:
 bench:
 	go test . -bench=$(sel) -count $(cnt) -benchmem
 
+cover:
+	go test -coverprofile cov . ./color
+	go tool cover -html cov
+
 other:
 	GOARCH=386 go build -o fractx386 ./cmd/fractx
 
-.PHONY: go fuzz bench other
+.PHONY: go fuzz bench cover other
