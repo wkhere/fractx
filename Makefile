@@ -17,4 +17,4 @@ bench:
 other:
 	GOARCH=386 go build -o fractx386 ./cmd/fractx
 
-.PHONY: go bench other
+.PHONY: go fuzz bench other
