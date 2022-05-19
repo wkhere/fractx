@@ -18,9 +18,7 @@ type FractalImage interface {
 var ImageGenerators = map[string]func(*Fractal) FractalImage{
 	"bw":   NewBWImage,
 	"gray": NewGrayImage,
-	"col1": func(f *Fractal) FractalImage {
-		return NewPalettedImage(Colorset1, f)
-	},
+	"col1": curry(NewPalettedImage, Colorset1),
 }
 
 func ImageGeneratorNames() (ss []string) {
