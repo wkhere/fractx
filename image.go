@@ -21,17 +21,6 @@ var ImageGenerators = map[string]func(*Fractal) FractalImage{
 	"col1": partial(NewPalettedImage, Colorset1),
 }
 
-func ImageGeneratorNames() (ss []string) {
-	ss = make([]string, len(ImageGenerators))
-	i := 0
-	for k := range ImageGenerators {
-		ss[i] = k
-		i++
-	}
-	sort.Strings(ss)
-	return
-}
-
 type grayImage struct {
 	*image.Gray
 	maxi uint
