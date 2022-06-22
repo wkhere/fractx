@@ -32,7 +32,7 @@ func DecodeHex(s string) (c color.Color, _ error) {
 	case 1:
 		return color.Gray{b[0]}, nil
 	default:
-		return c, fmt.Errorf("expected 3-byte or 1-byte hex, got: %s", s)
+		return c, fmt.Errorf("expected hex (1,3 or 4 bytes), got: %s", s)
 	}
 }
 
