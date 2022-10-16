@@ -6,6 +6,7 @@ import (
 	"image/color"
 )
 
+// todo: see golang.org/x/image/colornames
 var Names = map[string]string{
 	"black":    "00",
 	"white":    "ff",
