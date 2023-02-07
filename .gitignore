@@ -1,3 +1,5 @@
 /fractx
 /*.png
 /*.ppm
+/cov
+/oldbench/
