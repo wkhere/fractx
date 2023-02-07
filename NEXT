@@ -6,9 +6,9 @@
   + run from API, encode and test md5 then - via Writers
   + don't run exec benchmarks
 
-- colors
-- size & xy bounds via commandline
-
 + [fixed] grayImage bug - black area on the left, with maxi>256
 
-- with -h, print usage to stdout not stderr
++ with -h, print usage to stdout not stderr
++ size & xy bounds via commandline
++ colors
+
