@@ -22,6 +22,29 @@ type config struct {
 	help func(io.Writer)
 }
 
+func run(c *config) (err error) {
+	w, err := fileFromName(c.filename, c.overwrite)
+	if err != nil {
+		return fmt.Errorf("failed creating output file: %w", err)
+	}
+	defer func() {
+		if cerr := w.Close(); cerr != nil && err == nil {
+			err = fmt.Errorf("failed closing output file: %w", err)
+		}
+	}()
+
+	f := &fx.Fractal{c.size, c.bounds, c.maxi}
+
+	img := c.imageGen(f)
+	f.Fill(img)
+
+	err = png.Encode(w, img)
+	if err != nil {
+		return fmt.Errorf("failed writing to output file: %w", err)
+	}
+	return nil
+}
+
 func main() {
 	conf, err := parseArgs(os.Args[1:])
 	if err != nil {
@@ -32,27 +55,10 @@ func main() {
 		die(0)
 	}
 
-	w, err := fileFromName(conf.filename, conf.overwrite)
+	err = run(&conf)
 	if err != nil {
-		die(1, "failed creating output file:", err)
+		die(1, err)
 	}
-
-	defer func() {
-		if err = w.Close(); err != nil {
-			die(1, "failed closing output file:", err)
-		}
-	}()
-
-	f := &fx.Fractal{conf.size, conf.bounds, conf.maxi}
-
-	img := conf.imageGen(f)
-	f.Fill(img)
-
-	err = png.Encode(w, img)
-	if err != nil {
-		die(1, "failed writing to output file:", err)
-	}
-
 }
 
 func fileFromName(s string, overwrite bool) (*os.File, error) {
