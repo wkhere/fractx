@@ -6,16 +6,16 @@ import (
 	"io"
 	"os"
 
-	fx "github.com/wkhere/fractx"
+	"github.com/wkhere/fractx"
 )
 
 const prog = "fractx"
 
 type config struct {
-	size      fx.Size
-	bounds    fx.Rect
+	size      fractx.Size
+	bounds    fractx.Rect
 	maxi      uint
-	newImage  fx.ImageBuilder
+	newImage  fractx.ImageBuilder
 	filename  string
 	overwrite bool
 
@@ -33,7 +33,7 @@ func run(c *config) (err error) {
 		}
 	}()
 
-	f := &fx.Fractal{c.size, c.bounds, c.maxi}
+	f := &fractx.Fractal{c.size, c.bounds, c.maxi}
 
 	img := c.newImage(f)
 	f.Fill(img)

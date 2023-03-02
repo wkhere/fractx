@@ -6,24 +6,24 @@ import (
 	"strings"
 
 	"github.com/spf13/pflag"
-	fx "github.com/wkhere/fractx"
+	"github.com/wkhere/fractx"
 )
 
 func parseArgs(args []string) (conf config, err error) {
 	var (
-		colorAvail = strings.Join(fx.ImageBuilderNames(), ", ")
+		colorAvail = strings.Join(fractx.ImageBuilderNames(), ", ")
 		color      string
 		help       bool
 	)
 	flag := pflag.NewFlagSet("flags", pflag.ContinueOnError)
 	flag.SortFlags = false
 
-	conf.size = fx.DefaultSize
-	conf.bounds = fx.DefaultBounds
+	conf.size = fractx.DefaultSize
+	conf.bounds = fractx.DefaultBounds
 	flag.VarP(&conf.size, "size", "s", "pixel-plane size")
 	flag.VarP(&conf.bounds, "bounds", "b", "float-plane bounds")
 
-	flag.UintVarP(&conf.maxi, "maxi", "i", fx.DefaultMaxI,
+	flag.UintVarP(&conf.maxi, "maxi", "i", fractx.DefaultMaxI,
 		"max number of iterations")
 	flag.StringVarP(&color, "color", "c", "col1",
 		"one of: "+colorAvail)
@@ -54,7 +54,7 @@ func parseArgs(args []string) (conf config, err error) {
 	}
 
 	var ok bool
-	conf.newImage, ok = fx.ImageBuilders[color]
+	conf.newImage, ok = fractx.ImageBuilders[color]
 	if !ok {
 		return conf, fmt.Errorf(
 			"wrong color: %s, should be one of: %s", color, colorAvail,
