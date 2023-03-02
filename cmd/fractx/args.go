@@ -20,7 +20,7 @@ func parseArgs(args []string) (conf config, err error) {
 
 	conf.size = fx.DefaultSize
 	conf.bounds = fx.DefaultBounds
-	flag.VarP(&conf.size, "size", "s", "pixel size")
+	flag.VarP(&conf.size, "size", "s", "pixel-plane size")
 	flag.VarP(&conf.bounds, "bounds", "b", "float-plane bounds")
 
 	flag.UintVarP(&conf.maxi, "maxi", "i", fx.DefaultMaxI,
