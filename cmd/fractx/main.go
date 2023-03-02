@@ -15,7 +15,7 @@ type config struct {
 	size      fx.Size
 	bounds    fx.Rect
 	maxi      uint
-	imageGen  func(*fx.Fractal) fx.FractalImage
+	newImage  fx.ImageBuilder
 	filename  string
 	overwrite bool
 
@@ -35,7 +35,7 @@ func run(c *config) (err error) {
 
 	f := &fx.Fractal{c.size, c.bounds, c.maxi}
 
-	img := c.imageGen(f)
+	img := c.newImage(f)
 	f.Fill(img)
 
 	err = png.Encode(w, img)

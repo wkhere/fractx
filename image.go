@@ -8,14 +8,16 @@ import (
 	colorutil "github.com/wkhere/fractx/color"
 )
 
-type FractalImage interface {
+type Image interface {
 	image.Image
 
 	// writePixel writes pixel data for a given iteration.
 	writePixel(x, y int, iter uint)
 }
 
-var ImageGenerators = map[string]func(*Fractal) FractalImage{
+type ImageBuilder func(*Fractal) Image
+
+var ImageBuilders = map[string]ImageBuilder{
 	"bw":   NewBWImage,
 	"gray": NewGrayImage,
 	"col1": partial(NewPalettedImage, Colorset1),
@@ -27,7 +29,7 @@ type grayImage struct {
 	di   float64
 }
 
-func NewGrayImage(f *Fractal) FractalImage {
+func NewGrayImage(f *Fractal) Image {
 	return &grayImage{
 		Gray: image.NewGray(image.Rect(0, 0, f.Size.W, f.Size.H)),
 		maxi: f.MaxI,
@@ -47,7 +49,7 @@ type bwImage struct {
 	maxi uint
 }
 
-func NewBWImage(f *Fractal) FractalImage {
+func NewBWImage(f *Fractal) Image {
 	return &bwImage{
 		Gray: image.NewGray(image.Rect(0, 0, f.Size.W, f.Size.H)),
 		maxi: f.MaxI,
@@ -67,7 +69,7 @@ type palettedImage struct {
 	isteps []uint
 }
 
-func NewPalettedImage(cs Colorset, f *Fractal) FractalImage {
+func NewPalettedImage(cs Colorset, f *Fractal) Image {
 	var (
 		colors    = make([]color.Color, len(cs)+1)
 		itersteps = make([]uint, len(cs))

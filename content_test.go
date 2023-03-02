@@ -45,7 +45,7 @@ func TestPPMContent(t *testing.T) {
 
 			fractal := &Fractal{DefaultSize, DefaultBounds, tc.maxi}
 
-			img := ImageGenerators[tc.color](fractal)
+			img := ImageBuilders[tc.color](fractal)
 			fractal.Fill(img)
 
 			hash := md5.New()

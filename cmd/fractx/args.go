@@ -11,7 +11,7 @@ import (
 
 func parseArgs(args []string) (conf config, err error) {
 	var (
-		colorAvail = strings.Join(fx.ImageGeneratorNames(), ", ")
+		colorAvail = strings.Join(fx.ImageBuilderNames(), ", ")
 		color      string
 		help       bool
 	)
@@ -54,7 +54,7 @@ func parseArgs(args []string) (conf config, err error) {
 	}
 
 	var ok bool
-	conf.imageGen, ok = fx.ImageGenerators[color]
+	conf.newImage, ok = fx.ImageBuilders[color]
 	if !ok {
 		return conf, fmt.Errorf(
 			"wrong color: %s, should be one of: %s", color, colorAvail,
