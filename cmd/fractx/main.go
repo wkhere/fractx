@@ -33,7 +33,7 @@ func run(c *config) (err error) {
 		}
 	}()
 
-	f := &fractx.Fractal{c.size, c.bounds, c.maxi}
+	f := &fractx.Fractal{Size: c.size, Bounds: c.bounds, MaxI: c.maxi}
 
 	img := c.newImage(f)
 	f.Fill(img)
