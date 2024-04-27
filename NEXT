@@ -13,3 +13,5 @@
 + colors
 
 - serve image via http
+
+- simplify gha, add coveralls
