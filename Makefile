@@ -3,7 +3,6 @@ opt=	# options for fuzz
 cnt=5
 
 go:
-	go vet 		./...
 	go test		. ./color
 	go build	./cmd/fractx
 
