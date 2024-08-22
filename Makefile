@@ -5,6 +5,9 @@ cnt=5
 go:
 	go vet 		./...
 	go test		. ./color
+	go build	./cmd/fractx
+
+install:
 	go install	./cmd/fractx
 
 fuzz:
