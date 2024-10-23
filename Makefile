@@ -1,5 +1,4 @@
-sel=.	# selection for test/bench/fuzz
-opt=	# options for fuzz
+sel=.	# selection for test/bench
 cnt=5
 
 go:
@@ -10,8 +9,7 @@ install:
 	go install	./cmd/fractx
 
 fuzz:
-	#go test -fuzz=$(sel) $(opt) .
-	go test -fuzz=$(sel) $(opt) ./color
+	go test -fuzz=. ./color
 
 bench:
 	go test . -bench=$(sel) -count $(cnt) -benchmem
