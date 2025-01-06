@@ -52,7 +52,11 @@ func browserURL(addr string) (string, error) {
 func fractalHandler(s *server) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		err := req.ParseForm()
-		// todo: handle err
+		if err != nil {
+			http.Error(w, err.Error(), 400)
+			log.Println("parse form:", err)
+			return
+		}
 
 		var pixw, pixh int
 		var ok bool
@@ -81,7 +85,11 @@ func fractalHandler(s *server) http.HandlerFunc {
 		s.fractal.Fill(img)
 
 		err = png.Encode(w, img)
-		// todo: handle err
+		if err != nil {
+			http.Error(w, err.Error(), 500)
+			log.Println("encode png:", err)
+			return
+		}
 	}
 }
 
