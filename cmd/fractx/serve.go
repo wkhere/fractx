@@ -101,7 +101,7 @@ func sizeParam(val string) (x int, ok bool, err error) {
 	if err != nil {
 		return 0, false, err
 	}
-	if err == nil && x <= 0 {
+	if x <= 0 {
 		return 0, false, fmt.Errorf("%q is not a positive int", val)
 	}
 	return x, true, nil
