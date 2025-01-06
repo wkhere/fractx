@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"image/png"
 	"io"
 	"os"
 
@@ -18,31 +17,30 @@ type config struct {
 	newImage  fractx.ImageBuilder
 	filename  string
 	overwrite bool
+	web       bool
+	webAddr   string
 
 	help func(io.Writer)
 }
 
-func run(c *config) (err error) {
-	w, err := fileFromName(c.filename, c.overwrite)
-	if err != nil {
-		return fmt.Errorf("failed creating output file: %w", err)
-	}
-	defer func() {
-		if cerr := w.Close(); cerr != nil && err == nil {
-			err = fmt.Errorf("failed closing output file: %w", err)
-		}
-	}()
-
+func run(c *config) error {
 	f := &fractx.Fractal{Size: c.size, Bounds: c.bounds, MaxI: c.maxi}
 
-	img := c.newImage(f)
-	f.Fill(img)
-
-	err = png.Encode(w, img)
-	if err != nil {
-		return fmt.Errorf("failed writing to output file: %w", err)
+	if c.web {
+		return (&server{
+			fractal:  f,
+			origSize: c.size,
+			newImage: c.newImage,
+			addr:     c.webAddr,
+		}).serve()
+	} else {
+		return (&dumper{
+			fractal:   f,
+			newImage:  c.newImage,
+			filename:  c.filename,
+			overwrite: c.overwrite,
+		}).dump()
 	}
-	return nil
 }
 
 func main() {
@@ -59,17 +57,6 @@ func main() {
 	if err != nil {
 		die(1, err)
 	}
-}
-
-func fileFromName(s string, overwrite bool) (*os.File, error) {
-	if s == "-" {
-		return os.Stdout, nil
-	}
-	flag := os.O_WRONLY | os.O_CREATE | os.O_TRUNC
-	if !overwrite {
-		flag |= os.O_EXCL
-	}
-	return os.OpenFile(s, flag, 0644)
 }
 
 func die(exitcode int, msgs ...interface{}) {

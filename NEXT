@@ -12,6 +12,6 @@
 + size & xy bounds via commandline
 + colors
 
-- serve image via http
++ serve image via http
 
 + simplify gha, add coveralls
