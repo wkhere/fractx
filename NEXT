@@ -13,5 +13,7 @@
 + colors
 
 + serve image via http
+- scale image when resizing
+- drag & drop to select fractal bounds in the serve mode
 
 + simplify gha, add coveralls
