@@ -18,4 +18,5 @@
 
 + simplify gha, add coveralls
 
-- accept the fact that arm64 has different calculations and give new checksums
+- accept the fact that arm64 has different calculations and give new checksums;
+  or: check again checksums of raw ppm vs converted ppm
