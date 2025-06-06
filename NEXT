@@ -17,3 +17,5 @@
 - drag & drop to select fractal bounds in the serve mode
 
 + simplify gha, add coveralls
+
+- accept the fact that arm64 has different calculations and give new checksums
