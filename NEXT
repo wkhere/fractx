@@ -18,5 +18,5 @@
 
 + simplify gha, add coveralls
 
-- accept the fact that arm64 has different calculations and give new checksums;
-  or: check again checksums of raw ppm vs converted ppm
++ arm64 had different output because of fused FMADD in coords calculation;
+  disabled by un-fusing ie. forcing FMUL + FADD
