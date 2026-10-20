@@ -6,7 +6,7 @@ go:
 	go build	./cmd/fractx
 
 install:
-	go install	./cmd/fractx
+	go install -ldflags=-s ./cmd/fractx
 
 fuzz:
 	go test -fuzz=. ./color
