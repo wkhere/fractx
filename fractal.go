@@ -14,7 +14,7 @@ type Fractal struct {
 	MaxI   uint
 }
 
-func (f *Fractal) Fill(image Image) {
+func (f *Fractal) Fill(img Image) {
 	dx := (f.Bounds.X1 - f.Bounds.X0) / float64(f.Size.W)
 	dy := (f.Bounds.Y1 - f.Bounds.Y0) / float64(f.Size.H)
 	for y := 0; y < f.Size.H; y++ {
@@ -23,7 +23,7 @@ func (f *Fractal) Fill(image Image) {
 		for x := 0; x < f.Size.W; x++ {
 			// extra float conversion like above
 			i := iter(f.Bounds.X0+float64(float64(x)*dx), cy, f.MaxI)
-			image.writePixel(x, y, i)
+			img.writePixel(x, y, i)
 		}
 	}
 }

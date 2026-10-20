@@ -20,6 +20,7 @@ type server struct {
 	origSize fractx.Size
 	newImage fractx.ImageBuilder
 	addr     string
+	text     bool
 }
 
 func (s *server) serve() error {
@@ -83,6 +84,9 @@ func fractalHandler(s *server) http.HandlerFunc {
 		s.fractal.Size = size
 		img := s.newImage(s.fractal)
 		s.fractal.Fill(img)
+		if s.text {
+			s.fractal.AddText(img)
+		}
 
 		err = png.Encode(w, img)
 		if err != nil {

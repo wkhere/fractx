@@ -21,4 +21,4 @@
 + arm64 had different output because of fused FMADD in coords calculation;
   disabled by un-fusing ie. forcing FMUL + FADD
 
-- print size & bounds in the image with simple font renderer
++ render size & bounds onto the image

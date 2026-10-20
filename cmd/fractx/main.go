@@ -17,6 +17,7 @@ type config struct {
 	newImage  fractx.ImageBuilder
 	filename  string
 	overwrite bool
+	text      bool
 	web       bool
 	webAddr   string
 
@@ -32,6 +33,7 @@ func run(c *config) error {
 			origSize: c.size,
 			newImage: c.newImage,
 			addr:     c.webAddr,
+			text:     c.text,
 		}).serve()
 	} else {
 		return (&dumper{
@@ -39,6 +41,7 @@ func run(c *config) error {
 			newImage:  c.newImage,
 			filename:  c.filename,
 			overwrite: c.overwrite,
+			text:      c.text,
 		}).dump()
 	}
 }

@@ -13,6 +13,7 @@ type dumper struct {
 	newImage  fractx.ImageBuilder
 	filename  string
 	overwrite bool
+	text      bool
 }
 
 func (d *dumper) dump() (err error) {
@@ -28,6 +29,9 @@ func (d *dumper) dump() (err error) {
 
 	img := d.newImage(d.fractal)
 	d.fractal.Fill(img)
+	if d.text {
+		d.fractal.AddText(img)
+	}
 
 	err = png.Encode(w, img)
 	if err != nil {

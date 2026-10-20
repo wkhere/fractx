@@ -3,13 +3,14 @@ package fractx
 import (
 	"image"
 	"image/color"
+	"image/draw"
 	"sort"
 
 	colorutil "github.com/wkhere/fractx/color"
 )
 
 type Image interface {
-	image.Image
+	draw.Image
 
 	// writePixel writes pixel data for a given iteration.
 	writePixel(x, y int, iter uint)

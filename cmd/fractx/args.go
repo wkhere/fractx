@@ -31,6 +31,8 @@ func parseArgs(args []string) (conf config, err error) {
 		"output file or '-' for stdout")
 	flag.BoolVarP(&conf.overwrite, "overwrite", "O", true,
 		"overwrite output file")
+	flag.BoolVarP(&conf.text, "text", "t", true,
+		"print parameters on the image")
 	flag.BoolVarP(&conf.web, "web", "w", false,
 		"show fractal via the web server")
 	flag.StringVar(&conf.webAddr, "web-addr", ":8500",
