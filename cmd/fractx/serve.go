@@ -18,6 +18,7 @@ var fs embed.FS
 type server struct {
 	fractal  *fractx.Fractal
 	origSize fractx.Size
+	origMaxI uint
 	newImage fractx.ImageBuilder
 	addr     string
 	text     bool
@@ -62,6 +63,7 @@ func fractalHandler(s *server) http.HandlerFunc {
 		var pixw, pixh int
 		var ok bool
 		size := s.origSize
+		maxi := s.origMaxI
 
 		pixw, ok, err = sizeParam(req.Form.Get("w"))
 		if err != nil {
@@ -79,9 +81,18 @@ func fractalHandler(s *server) http.HandlerFunc {
 			size.H = pixh
 		}
 
+		nmaxi, ok, err := uintParam(req.Form.Get("maxi"))
+		if err != nil {
+			log.Printf("invalid maxi: %s; using default=%d", err, maxi)
+		}
+		if ok {
+			maxi = nmaxi
+		}
+
 		w.Header().Set("Content-Type", "image/png")
 
 		s.fractal.Size = size
+		s.fractal.MaxI = maxi
 		img := s.newImage(s.fractal)
 		s.fractal.Fill(img)
 		if s.text {
@@ -109,6 +120,17 @@ func sizeParam(val string) (x int, ok bool, err error) {
 		return 0, false, fmt.Errorf("%q is not a positive int", val)
 	}
 	return x, true, nil
+}
+
+func uintParam(val string) (_ uint, ok bool, err error) {
+	if val == "" {
+		return 0, false, nil
+	}
+	x, err := strconv.ParseUint(val, 10, 0)
+	if err != nil {
+		return 0, false, err
+	}
+	return uint(x), true, nil
 }
 
 func redirect(path string, code int) http.HandlerFunc {

@@ -31,6 +31,7 @@ func run(c *config) error {
 		return (&server{
 			fractal:  f,
 			origSize: c.size,
+			origMaxI: c.maxi,
 			newImage: c.newImage,
 			addr:     c.webAddr,
 			text:     c.text,
