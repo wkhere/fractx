@@ -30,11 +30,11 @@ func (s *Size) Set(input string) (err error) {
 	return nil
 }
 
-func (s *Size) String() string {
+func (s Size) String() string {
 	return fmt.Sprintf("%d,%d", s.W, s.H)
 }
 
-func (*Size) Type() string {
+func (Size) Type() string {
 	return "width,height"
 }
 
@@ -62,10 +62,10 @@ func (r *Rect) Set(input string) (err error) {
 	return nil
 }
 
-func (r *Rect) String() string {
+func (r Rect) String() string {
 	return fmt.Sprintf("%g,%g,%g,%g", r.X0, r.Y0, r.X1, r.Y1)
 }
 
-func (*Rect) Type() string {
+func (Rect) Type() string {
 	return "x0,y0,x1,y1"
 }
