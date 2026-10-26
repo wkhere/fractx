@@ -1,6 +1,7 @@
 package fractx
 
 import (
+	"fmt"
 	"image"
 	"image/color"
 	"image/draw"
@@ -12,7 +13,7 @@ import (
 
 func (f *Fractal) AddText(img Image) {
 
-	text := "size=" + f.Size.String() + "  bounds=" + f.Bounds.String()
+	text := fmt.Sprintf("size=%s  bounds=%s  maxi=%d", f.Size, f.Bounds, f.MaxI)
 
 	bg := color.NRGBA{0, 0, 0, 150}
 	fg := color.RGBA{220, 200, 140, 255}
