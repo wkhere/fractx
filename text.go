@@ -19,7 +19,8 @@ func (f *Fractal) AddText(img Image) {
 
 	const (
 		margin = 10
-		pad    = 4
+		xpad   = 5
+		ypad   = 4
 	)
 	face := basicfont.Face7x13
 	m := face.Metrics()
@@ -28,7 +29,7 @@ func (f *Fractal) AddText(img Image) {
 
 	box := image.Rect(
 		margin, margin,
-		margin+fw+2*pad, margin+fh+2*pad,
+		margin+fw+2*xpad, margin+fh+2*ypad,
 	)
 	draw.Draw(img, box, image.NewUniform(bg), image.Point{}, draw.Over)
 
@@ -36,7 +37,7 @@ func (f *Fractal) AddText(img Image) {
 		Dst:  img,
 		Src:  image.NewUniform(fg),
 		Face: face,
-		Dot:  fixed.P(box.Min.X+pad, box.Max.Y-pad-m.Descent.Ceil()),
+		Dot:  fixed.P(box.Min.X+xpad, box.Max.Y-ypad-m.Descent.Ceil()),
 	}
 	d.DrawString(text)
 }
