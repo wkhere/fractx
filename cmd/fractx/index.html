@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<img id="fractal" src="">
+</div>
+<script>
+
+function $id(id) { return document.getElementById(id); }
+
+function run() {
+	const m = 20;
+	const w = window.innerWidth - m;
+	const h = window.innerHeight - m;
+	fetch(`/f?w=${w}&h=${h}`)
+	.then(resp => resp.ok ? resp.blob() : rejectStatus(resp))
+	.then(data => {
+		const localURL = URL.createObjectURL(data);
+		$id('fractal').src = localURL;
+	})
+	.catch(err => console.log(err));
+}
+
+function rejectStatus(resp) {
+	return Promise.reject(
+		`bad status of ${resp.url}: ${resp.status} ${resp.statusText}`
+	);
+}
+
+function debounce(func, delay = 400) {
+    let timer;
+    return function(event) {
+        clearTimeout(timer);
+        timer = setTimeout(func, delay, event);
+    };
+}
+
+document.addEventListener('DOMContentLoaded', run);
+window.addEventListener('resize', debounce(run));
+</script>

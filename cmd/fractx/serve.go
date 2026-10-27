@@ -12,7 +12,7 @@ import (
 	"github.com/wkhere/fractx"
 )
 
-//go:embed favicon.ico
+//go:embed index.html favicon.ico
 var fs embed.FS
 
 type server struct {
@@ -32,9 +32,8 @@ func (s *server) serve() error {
 
 	files := http.FileServer(http.FS(fs))
 
-	http.Handle("/", redirect("/f", 303))
+	http.Handle("/", files)
 	http.Handle("/f", http.HandlerFunc(fractalHandler(s)))
-	http.Handle("/favicon.ico", files)
 
 	fmt.Println("visit", u)
 	return http.ListenAndServe(s.addr, nil)
