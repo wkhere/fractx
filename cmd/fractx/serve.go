@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"image/png"
 	"log"
+	"net"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -25,7 +26,7 @@ type server struct {
 }
 
 func (s *server) serve() error {
-	u, err := browserURL(s.addr)
+	lst, err := net.Listen("tcp", s.addr)
 	if err != nil {
 		return err
 	}
@@ -35,19 +36,19 @@ func (s *server) serve() error {
 	http.Handle("/", files)
 	http.Handle("/f", http.HandlerFunc(fractalHandler(s)))
 
-	fmt.Println("visit", u)
-	return http.ListenAndServe(s.addr, nil)
+	fmt.Println("visit", urlFromAddr(lst.Addr()))
+	return (&http.Server{}).Serve(lst)
 }
 
-func browserURL(addr string) (string, error) {
-	u, err := url.Parse("http://" + addr)
+func urlFromAddr(addr net.Addr) *url.URL {
+	u, err := url.Parse("http://" + addr.String())
 	if err != nil {
-		return "", err
+		panic(err) // shouldn't happen as the addr is already used by the listener
 	}
 	if u.Hostname() == "" {
-		return "http://localhost:" + u.Port(), nil
+		u.Host = "localhost:" + u.Port()
 	}
-	return u.String(), nil
+	return u
 }
 
 func fractalHandler(s *server) http.HandlerFunc {
