@@ -17,9 +17,7 @@ import (
 var fs embed.FS
 
 type server struct {
-	fractal  *fractx.Fractal
-	origSize fractx.Size
-	origMaxI uint
+	fractal0 fractx.Fractal
 	newImage fractx.ImageBuilder
 	addr     string
 	text     bool
@@ -60,43 +58,38 @@ func fractalHandler(s *server) http.HandlerFunc {
 			return
 		}
 
-		var pixw, pixh int
-		var ok bool
-		size := s.origSize
-		maxi := s.origMaxI
+		f := s.fractal0
 
-		pixw, ok, err = sizeParam(req.Form.Get("w"))
+		x, ok, err := sizeParam(req.Form.Get("w"))
 		if err != nil {
-			log.Printf("invalid width: %s; using default=%d", err, size.W)
+			log.Printf("invalid width: %s; using default=%d", err, f.Size.W)
 		}
 		if ok {
-			size.W = pixw
+			f.Size.W = x
 		}
 
-		pixh, ok, err = sizeParam(req.Form.Get("h"))
+		x, ok, err = sizeParam(req.Form.Get("h"))
 		if err != nil {
-			log.Printf("invalid height: %s; using default=%d", err, size.H)
+			log.Printf("invalid height: %s; using default=%d", err, f.Size.H)
 		}
 		if ok {
-			size.H = pixh
+			f.Size.H = x
 		}
 
 		nmaxi, ok, err := uintParam(req.Form.Get("maxi"))
 		if err != nil {
-			log.Printf("invalid maxi: %s; using default=%d", err, maxi)
+			log.Printf("invalid maxi: %s; using default=%d", err, f.MaxI)
 		}
 		if ok {
-			maxi = nmaxi
+			f.MaxI = nmaxi
 		}
 
 		w.Header().Set("Content-Type", "image/png")
 
-		s.fractal.Size = size
-		s.fractal.MaxI = maxi
-		img := s.newImage(s.fractal)
-		s.fractal.Fill(img)
+		img := s.newImage(&f)
+		f.Fill(img)
 		if s.text {
-			s.fractal.AddText(img)
+			f.AddText(img)
 		}
 
 		err = png.Encode(w, img)

@@ -29,9 +29,7 @@ func run(c *config) error {
 
 	if c.web {
 		return (&server{
-			fractal:  f,
-			origSize: c.size,
-			origMaxI: c.maxi,
+			fractal0: *f,
 			newImage: c.newImage,
 			addr:     c.webAddr,
 			text:     c.text,
