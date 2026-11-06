@@ -86,6 +86,16 @@ func fractalHandler(s *server) http.HandlerFunc {
 			}
 		}
 
+		if s := req.Form.Get("bounds"); s != "" {
+			var nbounds fractx.Rect
+			err := nbounds.Set(s)
+			if err != nil {
+				log.Printf("invalid bounds: %s; using default=%s", err, f.Bounds)
+			} else {
+				f.Bounds = nbounds
+			}
+		}
+
 		nmaxi, ok, err := uintParam(req.Form.Get("maxi"))
 		if err != nil {
 			log.Printf("invalid maxi: %s; using default=%d", err, f.MaxI)
