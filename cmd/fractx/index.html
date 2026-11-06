@@ -6,9 +6,13 @@ function $id(id) { return document.getElementById(id); }
 
 function run() {
 	const m = 20;
-	const w = window.innerWidth - m;
-	const h = window.innerHeight - m;
-	fetch(`/f?w=${w}&h=${h}`)
+	const p = new URLSearchParams({
+		w: window.innerWidth - m,
+		h: window.innerHeight - m,
+	});
+	rootParams.forEach((v, k) => p.set(k, v)); // rootParams take precedence
+
+	fetch(`/f?${p}`)
 	.then(resp => resp.ok ? resp.blob() : rejectStatus(resp))
 	.then(data => {
 		const localURL = URL.createObjectURL(data);
@@ -30,6 +34,8 @@ function debounce(func, delay = 400) {
         timer = setTimeout(func, delay, event);
     };
 }
+
+rootParams = new URLSearchParams(window.location.search);
 
 document.addEventListener('DOMContentLoaded', run);
 window.addEventListener('resize', debounce(run));
